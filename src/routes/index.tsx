@@ -8,20 +8,51 @@ import { Portfolio } from "@/components/portfolio/Portfolio";
 export const Route = createFileRoute("/")({
   loader: () => getPublicContent(),
   head: ({ loaderData }) => {
-    const p = loaderData?.data.profile;
-    const title = p ? `${p.name} (@${p.handle}) — Portfolio & Dashboard` : "Portfolio & Dashboard";
-    const description = p?.tagline || "Tactical developer portfolio, projects and live dashboard.";
+    const d = loaderData?.data;
+    const seo = d?.seo;
+    const url = (seo?.siteUrl || "https://nafim.vercel.app").replace(/\/$/, "");
+    const name = seo?.fullName || "Md Nafim Muttaki";
+    const title = seo?.title || `${name} — Portfolio`;
+    const description = seo?.description || d?.profile.bio || "";
+    const sameAs = [...(d?.links ?? []).map((l) => l.url).filter((u) => /^https?:\/\/[^/]+\/.+/.test(u)), ...(seo?.sameAs ?? [])];
+    const [first, ...rest] = name.split(" ");
+    const img = seo?.ogImage && /^https:/.test(seo.ogImage) ? seo.ogImage : "";
+    const person = {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name,
+      alternateName: seo?.alternateNames ?? [],
+      url,
+      description,
+      ...(img ? { image: img } : {}),
+      ...(d?.profile.email ? { email: `mailto:${d.profile.email}` } : {}),
+      address: { "@type": "PostalAddress", addressLocality: (seo?.location || "").split(",")[0]?.trim(), addressCountry: (seo?.location || "").split(",")[1]?.trim() },
+      alumniOf: [seo?.school, seo?.college].filter(Boolean).map((n) => ({ "@type": "EducationalOrganization", name: n })),
+      sameAs,
+    };
     return {
       meta: [
         { title },
         { name: "description", content: description },
+        { name: "keywords", content: (seo?.keywords ?? []).join(", ") },
+        { name: "author", content: name },
+        { name: "robots", content: "index, follow" },
+        { name: "geo.placename", content: seo?.location ?? "" },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "profile" },
+        { property: "og:url", content: url + "/" },
+        { property: "og:site_name", content: name },
+        { property: "profile:first_name", content: first },
+        { property: "profile:last_name", content: rest.join(" ") },
+        { property: "profile:username", content: seo?.alternateNames?.[0] ?? "" },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
+        ...(img ? [{ property: "og:image", content: img }, { name: "twitter:image", content: img }] : []),
       ],
+      links: [{ rel: "canonical", href: url + "/" }],
+      scripts: [{ type: "application/ld+json", children: JSON.stringify(person) }],
     };
   },
   component: Index,

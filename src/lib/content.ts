@@ -259,6 +259,21 @@ export interface SiteData {
   album: AlbumItem[];
   audio: { autoplay: boolean; shuffle: boolean; volume: number; tracks: Track[] };
   faq: FaqItem[];
+  seo: Seo;
+}
+
+export interface Seo {
+  siteUrl: string;
+  fullName: string;
+  alternateNames: string[];
+  title: string;
+  description: string;
+  keywords: string[];
+  location: string;
+  school: string;
+  college: string;
+  ogImage: string;
+  sameAs: string[];
 }
 
 export const TAB_LABELS: Record<TabId, string> = {
@@ -322,6 +337,19 @@ export function createDefaultData(): SiteData {
       fontMono: "JetBrains Mono",
       radius: 6,
       cardBorders: true,
+    },
+    seo: {
+      siteUrl: "https://nafim.vercel.app",
+      fullName: "Md Nafim Muttaki",
+      alternateNames: ["naphium", "Nafim Muttaki", "Md. Nafim Muttaki"],
+      title: "Md Nafim Muttaki (naphium) — Portfolio | Rajshahi, Bangladesh",
+      description: "Md Nafim Muttaki (naphium) is a student and developer from Rajshahi, Bangladesh. Govt. Laboratory High School (SSC 2026), Rajshahi College (HSC 2028). Projects, skills and contact.",
+      keywords: ["Md Nafim Muttaki", "Nafim Muttaki", "naphium", "Rajshahi", "Bangladesh", "Govt. Laboratory High School", "Rajshahi College", "portfolio"],
+      location: "Rajshahi, Bangladesh",
+      school: "Govt. Laboratory High School (SSC 2026)",
+      college: "Rajshahi College (HSC 2028)",
+      ogImage: "",
+      sameAs: [],
     },
     settings: {
       maintenance: { enabled: false, message: "System offline for maintenance. Back shortly." },
