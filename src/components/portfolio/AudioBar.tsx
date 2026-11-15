@@ -45,15 +45,19 @@ export function AudioBar() {
     <div className="fixed inset-x-0 bottom-0 z-50 border-t bg-card/95 md:bg-card/85 md:backdrop-blur-md">
       <div className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-3 py-2 sm:px-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto]">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="flex h-4 shrink-0 items-end gap-[2px]" aria-hidden>
-            {[10, 14, 7, 4, 4].map((h, i) => (
-              <span key={i} className="w-[3px] rounded-sm bg-foreground" style={{ height: h }} />
-            ))}
-          </span>
+          {cur.cover ? (
+            <img src={cur.cover} alt="" className={`h-11 w-11 shrink-0 rounded-md object-cover shadow-md transition-transform ${a.playing ? "scale-105" : ""}`} />
+          ) : (
+            <span className="flex h-4 shrink-0 items-end gap-[2px]" aria-hidden>
+              {[10, 14, 7, 4, 4].map((h, i) => (
+                <span key={i} className="w-[3px] rounded-sm bg-foreground" style={{ height: h }} />
+              ))}
+            </span>
+          )}
           <div className="min-w-0">
             <div className="truncate text-sm font-medium">{cur.title}</div>
             <div className="truncate font-mono text-[11px] text-muted-foreground">
-              {cur.artist || "naphium"} synth{!cur.url && ` · ${a.bpmOverride ?? cur.bpm} BPM`}
+              {cur.artist || "naphium"}{!cur.url && ` · synth · ${a.bpmOverride ?? cur.bpm} BPM`}
             </div>
           </div>
         </div>
