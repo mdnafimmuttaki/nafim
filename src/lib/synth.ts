@@ -18,7 +18,9 @@ export class ChipSynth {
 
   ensure() {
     if (!this.ctx) {
-      const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const Ctx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       this.ctx = new Ctx();
       this.master = this.ctx.createGain();
       this.master.gain.value = this.volume * 0.35;
@@ -33,7 +35,8 @@ export class ChipSynth {
 
   setVolume(v: number) {
     this.volume = v;
-    if (this.master && this.ctx) this.master.gain.setTargetAtTime(v * 0.35, this.ctx.currentTime, 0.02);
+    if (this.master && this.ctx)
+      this.master.gain.setTargetAtTime(v * 0.35, this.ctx.currentTime, 0.02);
   }
 
   private stepDur() {
@@ -77,7 +80,8 @@ export class ChipSynth {
         const d = this.stepDur();
         const f = notes[this.step % notes.length] ?? 440;
         this.note(f, this.nextTime, d * 0.9, this.track.wave, 0.5);
-        if (this.step % 4 === 0) this.note((notes[0] ?? 440) / 2, this.nextTime, d * 3, "triangle", 0.35);
+        if (this.step % 4 === 0)
+          this.note((notes[0] ?? 440) / 2, this.nextTime, d * 3, "triangle", 0.35);
         if (this.step % 2 === 1) this.note(f * 2, this.nextTime, d * 0.25, "square", 0.08);
         this.nextTime += d;
         this.step++;

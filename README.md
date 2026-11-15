@@ -3,6 +3,7 @@
 Build a comprehensive, ultra-high-performance full-stack personal portfolio and developer dashboard with a tactical cyberpunk/sci-fi HUD aesthetic, an interactive Web Audio synthesizer, an optimized canvas background, rich hacker easter eggs, and a complete password-protected admin CMS. The site is owner by Md. Nafim Muttaki and it's his portfolio which can be changed via admin panel
 
 ### 1. Visual Design & Theme Identity
+
 - **Aesthetic**: Tactical HUD / Cyberpunk / Tech Minimalist. Clean cards with subtle borders, monospace badges, coordinates, live status pills, and tactical grid overlays.
 - **Theming**: Full Dark and Light mode support with semantic theme tokens (background, surface, card, primary, accent, text, muted text, border radius, card borders). Include 40+ selectable web and monospace fonts (Geist, Geist Mono, JetBrains Mono, Inter, Space Grotesk, Fira Code, Bangla fonts).
 - **Hero & Header**:
@@ -12,6 +13,7 @@ Build a comprehensive, ultra-high-performance full-stack personal portfolio and 
   - Action buttons: Email, Copy Site Link, Theme Toggle (Sun/Moon), and Audio Player shortcut.
 
 ### 2. High-Performance Topographical Canvas Background
+
 - A full-screen `<canvas>` featuring animated topographical contour lines, grid coordinates, and subtle radar crosshairs.
 - **Extreme Low-Spec Optimization (Potato Mode)**:
   - Static grid lines and coordinate labels are drawn once to an offscreen cache canvas.
@@ -19,7 +21,9 @@ Build a comprehensive, ultra-high-performance full-stack personal portfolio and 
   - Zero heavy CSS blur filters or repaints on scroll so low-end mobile devices run at 60 FPS without stutter.
 
 ### 3. Public Portfolio Sections (16 Dynamic Tabs)
+
 Provide a tabbed dashboard with smooth pill navigation, keyboard shortcuts (keys 1–9 switch tabs), URL hash / remembered active tab, and smooth scrolling:
+
 1. **About**: Personal overview, philosophy statement, custom text blocks (with full-width toggle), and customizable hardware/academics/metrics grids and lists.
 2. **Links**: Curated developer, social, and gaming links with auto-detected platform icons and handles.
 3. **Social**: Integrated GitHub live stats (repos, followers, bio) via public API, plus preview embeds for Instagram, Facebook, and social posts.
@@ -38,6 +42,7 @@ Provide a tabbed dashboard with smooth pill navigation, keyboard shortcuts (keys
 16. **FAQ**: Accordion-style frequently asked questions and answers.
 
 ### 4. Hacker Extras, Terminal & Easter Eggs
+
 - **Quake-Style Dropdown Terminal**:
   - Opens via keyboard hotkey (default backtick `` ` ``) or via command palette.
   - Interactive CLI supporting commands: `help`, `whoami`, `neofetch`, `ls`, `cd <tab>`, `open <link>`, `socials`, `theme <light|dark>`, `ip`, `ua`, `pgp`, `ssh`, `source`, `matrix`, `clear`, secret `sudo` easter egg response, and custom user-defined commands.
@@ -53,6 +58,7 @@ Provide a tabbed dashboard with smooth pill navigation, keyboard shortcuts (keys
   - DevTools console welcome banner with custom ascii styling.
 
 ### 5. Full Admin CMS & Control Panel (`/admin`)
+
 - **Authentication**: Password-protected entry verified against a server-side `ADMIN_PASSWORD` environment variable (never exposed in client code or bundle).
 - **Single Source of Truth**: All content, settings, and themes are stored in a unified JSON document with a schema merger (`mergeData`) that ensures backwards compatibility.
 - **Real-Time Synchronization**: Live database persistence with Realtime subscriptions and query invalidation so updates appear instantly on all visitors' devices.
@@ -65,6 +71,7 @@ Provide a tabbed dashboard with smooth pill navigation, keyboard shortcuts (keys
   - Live split-screen or tabbed preview reflecting unsaved drafts before publishing.
 
 ### 6. Technical Stack & Architecture
+
 - **Framework**: TanStack Start v1 (React 19) with Vite, Tailwind CSS v4, Lucide icons, and Sonner notifications.
 - **Server Functions**: `createServerFn` for secure server-side admin checks and published portfolio content synchronization.
 - **Database**: Backend database with a single-row content document and Realtime enabled.

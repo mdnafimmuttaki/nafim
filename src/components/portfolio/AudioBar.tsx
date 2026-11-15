@@ -46,7 +46,11 @@ export function AudioBar() {
       <div className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-3 py-2 sm:px-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto]">
         <div className="flex min-w-0 items-center gap-3">
           {cur.cover ? (
-            <img src={cur.cover} alt="" className={`h-11 w-11 shrink-0 rounded-md object-cover shadow-md transition-transform ${a.playing ? "scale-105" : ""}`} />
+            <img
+              src={cur.cover}
+              alt=""
+              className={`h-11 w-11 shrink-0 rounded-md object-cover shadow-md transition-transform ${a.playing ? "scale-105" : ""}`}
+            />
           ) : (
             <span className="flex h-4 shrink-0 items-end gap-[2px]" aria-hidden>
               {[10, 14, 7, 4, 4].map((h, i) => (
@@ -57,7 +61,8 @@ export function AudioBar() {
           <div className="min-w-0">
             <div className="truncate text-sm font-medium">{cur.title}</div>
             <div className="truncate font-mono text-[11px] text-muted-foreground">
-              {cur.artist || "naphium"}{!cur.url && ` · synth · ${a.bpmOverride ?? cur.bpm} BPM`}
+              {cur.artist || "naphium"}
+              {!cur.url && ` · synth · ${a.bpmOverride ?? cur.bpm} BPM`}
             </div>
           </div>
         </div>
@@ -80,7 +85,11 @@ export function AudioBar() {
             0:00
           </span>
           <div className="relative hidden h-1 min-w-0 flex-1 rounded-full bg-border sm:block">
-            <div ref={fill} className="h-full origin-left rounded-full bg-primary" style={{ transform: "scaleX(0)" }} />
+            <div
+              ref={fill}
+              className="h-full origin-left rounded-full bg-primary"
+              style={{ transform: "scaleX(0)" }}
+            />
             <div
               ref={knob}
               className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary"
@@ -94,7 +103,13 @@ export function AudioBar() {
 
         <div className="hidden w-24 shrink-0 items-center gap-2 md:flex">
           <Volume2 className="h-4 w-4 text-muted-foreground" />
-          <Slider value={[a.volume * 100]} max={100} step={1} onValueChange={([v = 0]) => a.setVolume(v / 100)} aria-label="Volume" />
+          <Slider
+            value={[a.volume * 100]}
+            max={100}
+            step={1}
+            onValueChange={([v = 0]) => a.setVolume(v / 100)}
+            aria-label="Volume"
+          />
         </div>
       </div>
     </div>

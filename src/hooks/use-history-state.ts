@@ -18,7 +18,11 @@ export function pushHistory<T>(s: HistoryState<T>, value: T, merge: boolean): Hi
 export function undoHistory<T>(s: HistoryState<T>): HistoryState<T> {
   if (!s.past.length) return s;
   const prev = s.past[s.past.length - 1] as T;
-  return { past: s.past.slice(0, -1), present: prev, future: [s.present, ...s.future].slice(0, HISTORY_LIMIT) };
+  return {
+    past: s.past.slice(0, -1),
+    present: prev,
+    future: [s.present, ...s.future].slice(0, HISTORY_LIMIT),
+  };
 }
 export function redoHistory<T>(s: HistoryState<T>): HistoryState<T> {
   if (!s.future.length) return s;

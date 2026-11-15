@@ -11,7 +11,13 @@ function b64url(bytes: ArrayBuffer | Uint8Array) {
 }
 
 async function hmac(secret: string, message: string) {
-  const key = await crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
   return b64url(await crypto.subtle.sign("HMAC", key, enc.encode(message)));
 }
 
@@ -54,7 +60,11 @@ export async function signToken(secret: string, ttlSeconds: number, now = Date.n
   return `${payload}.${await hmac(secret, payload)}`;
 }
 
-export async function verifyToken(secret: string, token: string | undefined | null, now = Date.now()) {
+export async function verifyToken(
+  secret: string,
+  token: string | undefined | null,
+  now = Date.now(),
+) {
   if (!token || typeof token !== "string") return false;
   const parts = token.split(".");
   if (parts.length !== 3 || parts[0] !== "admin") return false;

@@ -1,8 +1,17 @@
 import { useEffect, useRef } from "react";
 
-const KATAKANA = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+const KATAKANA =
+  "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 
-export function MatrixRain({ glyphs, onClose, background = false }: { glyphs: "katakana" | "binary" | "mixed"; onClose: () => void; background?: boolean }) {
+export function MatrixRain({
+  glyphs,
+  onClose,
+  background = false,
+}: {
+  glyphs: "katakana" | "binary" | "mixed";
+  onClose: () => void;
+  background?: boolean;
+}) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -55,11 +64,21 @@ export function MatrixRain({ glyphs, onClose, background = false }: { glyphs: "k
   }, [glyphs, onClose, background]);
 
   return (
-    <div className={background ? "pointer-events-none fixed inset-0 z-[1] matrix-backdrop" : "fixed inset-0 z-[90] bg-background"} onClick={background ? undefined : onClose} role="presentation">
+    <div
+      className={
+        background
+          ? "pointer-events-none fixed inset-0 z-[1] matrix-backdrop"
+          : "fixed inset-0 z-[90] bg-background"
+      }
+      onClick={background ? undefined : onClose}
+      role="presentation"
+    >
       <canvas ref={ref} className="h-full w-full" />
-      {!background && <div className="hud-badge hud-badge-primary absolute bottom-4 left-1/2 -translate-x-1/2">
-        wake up, neo · click or esc to exit
-      </div>}
+      {!background && (
+        <div className="hud-badge hud-badge-primary absolute bottom-4 left-1/2 -translate-x-1/2">
+          wake up, neo · click or esc to exit
+        </div>
+      )}
     </div>
   );
 }

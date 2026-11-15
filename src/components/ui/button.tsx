@@ -17,8 +17,10 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         hud: "rounded-full bg-primary font-medium text-primary-foreground shadow-sm hover:opacity-90",
-        hudGhost: "rounded-full border border-border bg-card text-foreground shadow-sm hover:bg-accent hover:border-primary/50",
-        signal: "border border-signal/60 bg-signal/10 font-mono uppercase tracking-wider text-signal hover:bg-signal hover:text-signal-foreground",
+        hudGhost:
+          "rounded-full border border-border bg-card text-foreground shadow-sm hover:bg-accent hover:border-primary/50",
+        signal:
+          "border border-signal/60 bg-signal/10 font-mono uppercase tracking-wider text-signal hover:bg-signal hover:text-signal-foreground",
       },
       size: {
         default: "h-9 px-4 py-2",

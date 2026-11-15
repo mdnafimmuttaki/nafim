@@ -157,11 +157,17 @@ function Cms({ token, onLogout }: { token: string; onLogout: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const dirty = useMemo(() => !!saved && JSON.stringify(saved) !== JSON.stringify(draft), [saved, draft]);
+  const dirty = useMemo(
+    () => !!saved && JSON.stringify(saved) !== JSON.stringify(draft),
+    [saved, draft],
+  );
 
   // push draft to preview iframe
   const postDraft = useCallback(() => {
-    iframeRef.current?.contentWindow?.postMessage({ type: "hud-preview", data: draft }, window.location.origin);
+    iframeRef.current?.contentWindow?.postMessage(
+      { type: "hud-preview", data: draft },
+      window.location.origin,
+    );
   }, [draft]);
   useEffect(() => {
     const t = setTimeout(postDraft, 200);
@@ -169,7 +175,11 @@ function Cms({ token, onLogout }: { token: string; onLogout: () => void }) {
   }, [postDraft]);
   useEffect(() => {
     const onMsg = (e: MessageEvent) => {
-      if (e.origin === window.location.origin && (e.data as { type?: string })?.type === "hud-preview-ready") postDraft();
+      if (
+        e.origin === window.location.origin &&
+        (e.data as { type?: string })?.type === "hud-preview-ready"
+      )
+        postDraft();
     };
     window.addEventListener("message", onMsg);
     return () => window.removeEventListener("message", onMsg);
@@ -255,12 +265,28 @@ function Cms({ token, onLogout }: { token: string; onLogout: () => void }) {
           <span className="status-dot" />
           <span className="font-mono text-sm font-semibold">HUD // CMS</span>
         </div>
-        <span className={`hud-badge ${dirty ? "hud-badge-signal" : "hud-badge-primary"}`}>{dirty ? "unsaved changes" : "in sync"}</span>
+        <span className={`hud-badge ${dirty ? "hud-badge-signal" : "hud-badge-primary"}`}>
+          {dirty ? "unsaved changes" : "in sync"}
+        </span>
         <div className="ml-auto flex flex-wrap items-center gap-1.5">
-          <Button variant="hudGhost" size="icon" onClick={h.undo} disabled={!h.canUndo} aria-label="Undo (Ctrl+Z)" title="Undo (Ctrl+Z)">
+          <Button
+            variant="hudGhost"
+            size="icon"
+            onClick={h.undo}
+            disabled={!h.canUndo}
+            aria-label="Undo (Ctrl+Z)"
+            title="Undo (Ctrl+Z)"
+          >
             <Undo2 />
           </Button>
-          <Button variant="hudGhost" size="icon" onClick={h.redo} disabled={!h.canRedo} aria-label="Redo (Ctrl+Y)" title="Redo (Ctrl+Y)">
+          <Button
+            variant="hudGhost"
+            size="icon"
+            onClick={h.redo}
+            disabled={!h.canRedo}
+            aria-label="Redo (Ctrl+Y)"
+            title="Redo (Ctrl+Y)"
+          >
             <Redo2 />
           </Button>
           <Button
@@ -276,13 +302,31 @@ function Cms({ token, onLogout }: { token: string; onLogout: () => void }) {
           >
             <RotateCcw /> Discard
           </Button>
-          <Button variant="hudGhost" size="icon" onClick={exportJson} aria-label="Export JSON" title="Export JSON backup">
+          <Button
+            variant="hudGhost"
+            size="icon"
+            onClick={exportJson}
+            aria-label="Export JSON"
+            title="Export JSON backup"
+          >
             <Download />
           </Button>
-          <Button variant="hudGhost" size="icon" onClick={() => fileRef.current?.click()} aria-label="Import JSON" title="Import JSON backup">
+          <Button
+            variant="hudGhost"
+            size="icon"
+            onClick={() => fileRef.current?.click()}
+            aria-label="Import JSON"
+            title="Import JSON backup"
+          >
             <Upload />
           </Button>
-          <input ref={fileRef} type="file" accept="application/json" className="hidden" onChange={(e) => importJson(e.target.files?.[0])} />
+          <input
+            ref={fileRef}
+            type="file"
+            accept="application/json"
+            className="hidden"
+            onChange={(e) => importJson(e.target.files?.[0])}
+          />
           <div className="mx-1 flex rounded-md border p-0.5">
             {(
               [
@@ -376,12 +420,19 @@ function Cms({ token, onLogout }: { token: string; onLogout: () => void }) {
             </>
           )}
           {showFrame && (
-            <div className={`${showSplit ? "hidden lg:block" : ""} sticky top-[49px] h-[calc(100vh-49px)] flex-1 border-l`}>
+            <div
+              className={`${showSplit ? "hidden lg:block" : ""} sticky top-[49px] h-[calc(100vh-49px)] flex-1 border-l`}
+            >
               <div className="flex items-center justify-between border-b bg-card px-3 py-1">
                 <span className="hud-label">live preview · unsaved draft</span>
                 <span className="hud-label">{h.undoCount}/50 history</span>
               </div>
-              <iframe ref={iframeRef} src="/?preview=1" title="Live preview" className="h-[calc(100%-28px)] w-full" />
+              <iframe
+                ref={iframeRef}
+                src="/?preview=1"
+                title="Live preview"
+                className="h-[calc(100%-28px)] w-full"
+              />
             </div>
           )}
         </div>

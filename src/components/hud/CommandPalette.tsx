@@ -1,6 +1,22 @@
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import type { SiteData, TabConfig } from "@/lib/content";
-import { Copy, ExternalLink, Hash, Moon, Music, Sun, Terminal as TermIcon, Zap } from "lucide-react";
+import {
+  Copy,
+  ExternalLink,
+  Hash,
+  Moon,
+  Music,
+  Sun,
+  Terminal as TermIcon,
+  Zap,
+} from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -30,7 +46,9 @@ export function CommandPalette(p: Props) {
           {p.tabs.map((t, i) => (
             <CommandItem key={t.id} onSelect={run(() => p.onTab(t.id))}>
               <Hash /> {t.label}
-              {i < 9 && <span className="ml-auto font-mono text-xs text-muted-foreground">{i + 1}</span>}
+              {i < 9 && (
+                <span className="ml-auto font-mono text-xs text-muted-foreground">{i + 1}</span>
+              )}
             </CommandItem>
           ))}
         </CommandGroup>

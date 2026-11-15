@@ -47,8 +47,24 @@ interface DiscordInfo {
   activity?: string | undefined;
 }
 
-type Act = { name: string; type: number; details?: string; state?: string; application_id?: string; emoji?: { name?: string }; assets?: { large_image?: string }; timestamps?: { start?: number; end?: number } };
-type Rich = { label: string; title: string; sub?: string | undefined; art?: string | undefined; start?: number | undefined; end?: number | undefined };
+type Act = {
+  name: string;
+  type: number;
+  details?: string;
+  state?: string;
+  application_id?: string;
+  emoji?: { name?: string };
+  assets?: { large_image?: string };
+  timestamps?: { start?: number; end?: number };
+};
+type Rich = {
+  label: string;
+  title: string;
+  sub?: string | undefined;
+  art?: string | undefined;
+  start?: number | undefined;
+  end?: number | undefined;
+};
 const mmss = (ms: number) => {
   const v = Math.max(0, Math.floor(ms / 1000));
   const h = Math.floor(v / 3600);
@@ -56,7 +72,11 @@ const mmss = (ms: number) => {
   const sec = String(v % 60).padStart(2, "0");
   return h ? `${h}:${m}:${sec}` : `${m}:${sec}`;
 };
-const DOT: Record<string, string> = { online: "bg-primary", idle: "bg-accent-foreground", dnd: "bg-destructive" };
+const DOT: Record<string, string> = {
+  online: "bg-primary",
+  idle: "bg-accent-foreground",
+  dnd: "bg-destructive",
+};
 
 function Elapsed({ r }: { r: Rich }) {
   const [now, setNow] = useState(() => Date.now());
@@ -70,7 +90,10 @@ function Elapsed({ r }: { r: Rich }) {
     <div className="space-y-1">
       {r.end && (
         <div className="h-1 overflow-hidden rounded bg-muted">
-          <div className="h-full bg-primary" style={{ width: `${(el / (r.end - r.start)) * 100}%` }} />
+          <div
+            className="h-full bg-primary"
+            style={{ width: `${(el / (r.end - r.start)) * 100}%` }}
+          />
         </div>
       )}
       <div className="font-mono text-xs font-semibold">
@@ -97,7 +120,9 @@ function Presence({ data }: { data: SiteData }) {
     let alive = true;
     const load = async () => {
       try {
-        const r = await fetch(`https://api.lanyard.rest/v1/users/${encodeURIComponent(p.discordId)}`);
+        const r = await fetch(
+          `https://api.lanyard.rest/v1/users/${encodeURIComponent(p.discordId)}`,
+        );
         const j = (await r.json()) as {
           success: boolean;
           data?: {
@@ -105,26 +130,49 @@ function Presence({ data }: { data: SiteData }) {
             listening_to_spotify?: boolean;
             discord_user?: { id: string; avatar?: string; global_name?: string; username?: string };
             activities?: Act[];
-            spotify?: { song: string; artist: string; album_art_url?: string; timestamps?: { start: number; end?: number } };
+            spotify?: {
+              song: string;
+              artist: string;
+              album_art_url?: string;
+              timestamps?: { start: number; end?: number };
+            };
           };
         };
         if (!alive || !j.success || !j.data) return;
         const u = j.data.discord_user;
-        const act = j.data.listening_to_spotify ? "Listening to Spotify" : j.data.activities?.find((a) => a.type !== 4)?.name;
+        const act = j.data.listening_to_spotify
+          ? "Listening to Spotify"
+          : j.data.activities?.find((a) => a.type !== 4)?.name;
         const sp = j.data.spotify;
         const game = j.data.activities?.find((x) => x.type !== 4 && x.type !== 2);
         const custom = j.data.activities?.find((x) => x.type === 4);
         const img = (x?: Act) => {
           const li = x?.assets?.large_image;
           if (!li) return undefined;
-          if (li.startsWith("mp:external/")) return `https://media.discordapp.net/external/${li.slice(12)}`;
-          return x?.application_id ? `https://cdn.discordapp.com/app-assets/${x.application_id}/${li}.png` : undefined;
+          if (li.startsWith("mp:external/"))
+            return `https://media.discordapp.net/external/${li.slice(12)}`;
+          return x?.application_id
+            ? `https://cdn.discordapp.com/app-assets/${x.application_id}/${li}.png`
+            : undefined;
         };
         setRich(
           sp
-            ? { label: "Listening to Spotify", title: sp.song, sub: sp.artist, art: sp.album_art_url, start: sp.timestamps?.start, end: sp.timestamps?.end }
+            ? {
+                label: "Listening to Spotify",
+                title: sp.song,
+                sub: sp.artist,
+                art: sp.album_art_url,
+                start: sp.timestamps?.start,
+                end: sp.timestamps?.end,
+              }
             : game
-              ? { label: `${game.type === 3 ? "Watching" : game.type === 1 ? "Streaming" : "Playing"} ${game.name}`, title: game.details || game.name, sub: game.state, art: img(game), start: game.timestamps?.start }
+              ? {
+                  label: `${game.type === 3 ? "Watching" : game.type === 1 ? "Streaming" : "Playing"} ${game.name}`,
+                  title: game.details || game.name,
+                  sub: game.state,
+                  art: img(game),
+                  start: game.timestamps?.start,
+                }
               : custom?.state
                 ? { label: "Status", title: `${custom.emoji?.name ?? ""} ${custom.state}`.trim() }
                 : null,
@@ -133,7 +181,9 @@ function Presence({ data }: { data: SiteData }) {
           status: j.data.discord_status,
           activity: act,
           name: u?.global_name || u?.username,
-          avatar: u?.avatar ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=128` : undefined,
+          avatar: u?.avatar
+            ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=128`
+            : undefined,
         });
       } catch {
         /* ignore */
@@ -151,7 +201,9 @@ function Presence({ data }: { data: SiteData }) {
   const status = isDiscord
     ? (discord?.status ?? "offline")
     : (p.presenceStates[i % Math.max(1, p.presenceStates.length)] ?? "Online");
-  const activity = isDiscord ? discord?.activity || "Not doing anything right now" : `Currently ${status.toLowerCase()}`;
+  const activity = isDiscord
+    ? discord?.activity || "Not doing anything right now"
+    : `Currently ${status.toLowerCase()}`;
   const name = (isDiscord && discord?.name) || p.nickname || p.handle;
   const pic = (isDiscord && discord?.avatar) || p.avatarUrl;
 
@@ -159,7 +211,9 @@ function Presence({ data }: { data: SiteData }) {
     pic ? (
       <img src={pic} alt="" className={`${cls} object-cover`} loading="lazy" />
     ) : (
-      <span className={`${cls} flex items-center justify-center bg-primary text-xs font-bold text-primary-foreground`}>
+      <span
+        className={`${cls} flex items-center justify-center bg-primary text-xs font-bold text-primary-foreground`}
+      >
         {initials(p.name)}
       </span>
     );
@@ -168,18 +222,35 @@ function Presence({ data }: { data: SiteData }) {
     <div className="mx-auto w-full max-w-sm space-y-2 text-left">
       <div className="flex min-w-0 items-center gap-2 font-mono text-xs">
         <Avatar cls="h-6 w-6 shrink-0 rounded-full" />
-        <span className={`h-2 w-2 shrink-0 rounded-full ${DOT[status.toLowerCase()] ?? "bg-muted-foreground"}`} />
+        <span
+          className={`h-2 w-2 shrink-0 rounded-full ${DOT[status.toLowerCase()] ?? "bg-muted-foreground"}`}
+        />
         <span className="truncate">
           {name} · {status.toLowerCase()}
         </span>
       </div>
       {isDiscord && rich ? (
         <div className="flex min-w-0 items-center gap-3">
-          {rich.art ? <img src={rich.art} alt="" className="h-12 w-12 shrink-0 rounded-md object-cover" loading="lazy" /> : <Avatar cls="h-12 w-12 shrink-0 rounded-md" />}
+          {rich.art ? (
+            <img
+              src={rich.art}
+              alt=""
+              className="h-12 w-12 shrink-0 rounded-md object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <Avatar cls="h-12 w-12 shrink-0 rounded-md" />
+          )}
           <div className="min-w-0 flex-1">
-            <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{rich.label}</div>
+            <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+              {rich.label}
+            </div>
             <div className="truncate text-sm font-medium">{rich.title}</div>
-            {rich.sub && <div className="truncate text-xs text-muted-foreground">{rich.sub.replace(/; /g, ", ")}</div>}
+            {rich.sub && (
+              <div className="truncate text-xs text-muted-foreground">
+                {rich.sub.replace(/; /g, ", ")}
+              </div>
+            )}
             <Elapsed r={rich} />
           </div>
         </div>
@@ -187,7 +258,9 @@ function Presence({ data }: { data: SiteData }) {
         <div className="flex min-w-0 items-center gap-3">
           <Avatar cls="h-11 w-11 shrink-0 rounded-md" />
           <div className="min-w-0">
-            <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{isDiscord ? "Discord" : "Status"}</div>
+            <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+              {isDiscord ? "Discord" : "Status"}
+            </div>
             <div className="truncate text-sm font-medium">{activity}</div>
             <div className="text-xs text-muted-foreground">{status.toLowerCase()}</div>
           </div>
@@ -231,7 +304,13 @@ export function Header({ data, mode, onToggleTheme, onContacts }: Props) {
       </div>
 
       <div className="flex flex-col items-center gap-3 px-4 pb-7 text-center sm:px-8">
-        <div id="avatar" role="button" tabIndex={0} aria-label="Profile avatar" className="relative -mt-16 shrink-0 cursor-pointer sm:-mt-20">
+        <div
+          id="avatar"
+          role="button"
+          tabIndex={0}
+          aria-label="Profile avatar"
+          className="relative -mt-16 shrink-0 cursor-pointer sm:-mt-20"
+        >
           {p.avatarUrl ? (
             <img
               src={p.avatarUrl}
@@ -243,11 +322,20 @@ export function Header({ data, mode, onToggleTheme, onContacts }: Props) {
               {initials(p.name)}
             </div>
           )}
-          <span className="absolute bottom-2 right-2 h-3.5 w-3.5 rounded-full border-2 border-card bg-signal" aria-hidden />
+          <span
+            className="absolute bottom-2 right-2 h-3.5 w-3.5 rounded-full border-2 border-card bg-signal"
+            aria-hidden
+          />
         </div>
 
         <div className="w-full min-w-0 space-y-1">
-          <h1 id="profile-title" tabIndex={0} className="text-3xl font-bold tracking-tight sm:text-5xl">{p.name}</h1>
+          <h1
+            id="profile-title"
+            tabIndex={0}
+            className="text-3xl font-bold tracking-tight sm:text-5xl"
+          >
+            {p.name}
+          </h1>
           <p className="font-mono text-[11px] text-muted-foreground sm:text-xs">
             {nick && `(${nick}) · `}@{p.handle}
           </p>
@@ -257,7 +345,11 @@ export function Header({ data, mode, onToggleTheme, onContacts }: Props) {
         </div>
 
         {p.tagline && <p className="pt-1 text-base font-medium sm:text-lg">{p.tagline}</p>}
-        {p.bio && <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-[15px]">{p.bio}</p>}
+        {p.bio && (
+          <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
+            {p.bio}
+          </p>
+        )}
 
         <button
           type="button"

@@ -59,7 +59,11 @@ export function TopoCanvas({ className = "" }: { className?: string }) {
       cctx.font = "9px ui-monospace, monospace";
       for (let x = 0; x <= w; x += step * 2) {
         for (let y = step; y <= h; y += step * 2) {
-          cctx.fillText(`${(x / step).toString(16).toUpperCase()}${Math.round(y / step)}`, x + 4, y - 4);
+          cctx.fillText(
+            `${(x / step).toString(16).toUpperCase()}${Math.round(y / step)}`,
+            x + 4,
+            y - 4,
+          );
         }
       }
       // radar crosshairs
@@ -93,7 +97,8 @@ export function TopoCanvas({ className = "" }: { className?: string }) {
 
     // cheap pseudo-noise height field
     const field = (x: number, y: number, tt: number) =>
-      Math.sin(x * 0.006 + tt * 0.25) * Math.cos(y * 0.007 - tt * 0.18) + Math.sin((x + y) * 0.004 + tt * 0.12) * 0.6;
+      Math.sin(x * 0.006 + tt * 0.25) * Math.cos(y * 0.007 - tt * 0.18) +
+      Math.sin((x + y) * 0.004 + tt * 0.12) * 0.6;
 
     const render = () => {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -134,7 +139,10 @@ export function TopoCanvas({ className = "" }: { className?: string }) {
       drawStatic();
       render();
     });
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style", "data-mode"] });
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "style", "data-mode"],
+    });
 
     resize();
     let rt: ReturnType<typeof setTimeout>;
@@ -155,5 +163,11 @@ export function TopoCanvas({ className = "" }: { className?: string }) {
     };
   }, []);
 
-  return <canvas ref={ref} aria-hidden className={`pointer-events-none fixed inset-0 z-0 ${className}`} />;
+  return (
+    <canvas
+      ref={ref}
+      aria-hidden
+      className={`pointer-events-none fixed inset-0 z-0 ${className}`}
+    />
+  );
 }
