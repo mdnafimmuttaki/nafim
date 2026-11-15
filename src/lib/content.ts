@@ -222,6 +222,7 @@ export interface Track {
   title: string;
   artist: string;
   url: string;
+  cover?: string;
   notes: number[];
   bpm: number;
   wave: "square" | "sawtooth" | "triangle" | "sine";
