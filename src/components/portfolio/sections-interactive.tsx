@@ -138,7 +138,8 @@ export function AudioSection() {
             className={`flex w-full items-center gap-3 px-4 py-2.5 text-left font-mono text-sm hover:bg-accent ${i === a.index ? "text-primary" : ""}`}
           >
             <span className="w-6 text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-            <span className="flex-1 truncate">{t.title}</span>
+            {t.cover && <img src={t.cover} alt="" loading="lazy" className="h-9 w-9 shrink-0 rounded object-cover" />}
+            <span className="min-w-0 flex-1"><span className="block truncate">{t.title}</span>{t.artist && <span className="block truncate text-xs text-muted-foreground">{t.artist}</span>}</span>
             <span className="text-xs text-muted-foreground">{t.url ? "mp3" : t.wave}</span>
           </button>
         ))}
