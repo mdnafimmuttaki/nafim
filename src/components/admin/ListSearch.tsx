@@ -24,15 +24,18 @@ async function searchGames(q: string): Promise<Hit[]> {
   });
 }
 
+// Audius: free, keyless, full-length streams.
+const AUDIUS = "https://api.audius.co/v1";
+const APP = "app_name=naphium-portfolio";
 async function searchTracks(q: string): Promise<Hit[]> {
-  const r = await fetch(`https://itunes.apple.com/search?media=music&entity=song&limit=12&term=${encodeURIComponent(q)}`);
-  const { results = [] } = await r.json();
-  return results.map((t: any) => ({
-    key: String(t.trackId),
-    title: t.trackName,
-    sub: `${t.artistName} · ${(t.releaseDate ?? "").slice(0, 4)}`,
-    image: String(t.artworkUrl100 ?? "").replace("100x100", "600x600"),
-    item: { id: uid("trk"), title: t.trackName, artist: t.artistName, url: t.previewUrl ?? "", notes: [261.63, 329.63, 392], bpm: 120, wave: "square" },
+  const r = await fetch(`${AUDIUS}/tracks/search?query=${encodeURIComponent(q)}&limit=15&${APP}`);
+  const { data = [] } = await r.json();
+  return data.filter((t: any) => t.is_streamable !== false).map((t: any) => ({
+    key: String(t.id),
+    title: t.title,
+    sub: `${t.user?.name ?? ""} · ${Math.round((t.duration ?? 0) / 60)} min · full track`,
+    image: t.artwork?.["480x480"] ?? t.artwork?.["150x150"] ?? "",
+    item: { id: uid("trk"), title: t.title, artist: t.user?.name ?? "", url: `${AUDIUS}/tracks/${t.id}/stream?${APP}`, notes: [261.63, 329.63, 392], bpm: 120, wave: "square" },
   }));
 }
 
