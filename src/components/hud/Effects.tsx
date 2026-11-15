@@ -1,7 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import type { SiteData } from "@/lib/content";
 
-const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+const KONAMI = [
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "b",
+  "a",
+];
 
 export function useKonami(enabled: boolean, onTrigger: () => void) {
   useEffect(() => {
@@ -36,14 +47,23 @@ export function ReadingProgress() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  return <div ref={ref} className="fixed left-0 top-0 z-[70] h-0.5 w-full origin-left bg-primary" style={{ transform: "scaleX(0)" }} />;
+  return (
+    <div
+      ref={ref}
+      className="fixed left-0 top-0 z-[70] h-0.5 w-full origin-left bg-primary"
+      style={{ transform: "scaleX(0)" }}
+    />
+  );
 }
 
 export function FpsHud() {
   const [fps, setFps] = useState(0);
   const [info, setInfo] = useState({ cores: 0, mem: "?", net: "?" });
   useEffect(() => {
-    const nav = navigator as Navigator & { deviceMemory?: number; connection?: { effectiveType?: string } };
+    const nav = navigator as Navigator & {
+      deviceMemory?: number;
+      connection?: { effectiveType?: string };
+    };
     setInfo({
       cores: nav.hardwareConcurrency ?? 0,
       mem: nav.deviceMemory ? `${nav.deviceMemory}GB` : "?",
@@ -69,7 +89,9 @@ export function FpsHud() {
       <span>
         FPS <span className={fps >= 50 ? "text-primary" : "text-signal"}>{fps}</span>
       </span>
-      <span>CPU {info.cores}T · MEM {info.mem}</span>
+      <span>
+        CPU {info.cores}T · MEM {info.mem}
+      </span>
       <span>NET {info.net}</span>
     </div>
   );

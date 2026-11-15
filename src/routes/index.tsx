@@ -14,7 +14,10 @@ export const Route = createFileRoute("/")({
     const name = seo?.fullName || "Md Nafim Muttaki";
     const title = seo?.title || `${name} — Portfolio`;
     const description = seo?.description || d?.profile.bio || "";
-    const sameAs = [...(d?.links ?? []).map((l) => l.url).filter((u) => /^https?:\/\/[^/]+\/.+/.test(u)), ...(seo?.sameAs ?? [])];
+    const sameAs = [
+      ...(d?.links ?? []).map((l) => l.url).filter((u) => /^https?:\/\/[^/]+\/.+/.test(u)),
+      ...(seo?.sameAs ?? []),
+    ];
     const [first, ...rest] = name.split(" ");
     const img = seo?.ogImage && /^https:/.test(seo.ogImage) ? seo.ogImage : "";
     const person = {
@@ -26,8 +29,14 @@ export const Route = createFileRoute("/")({
       description,
       ...(img ? { image: img } : {}),
       ...(d?.profile.email ? { email: `mailto:${d.profile.email}` } : {}),
-      address: { "@type": "PostalAddress", addressLocality: (seo?.location || "").split(",")[0]?.trim(), addressCountry: (seo?.location || "").split(",")[1]?.trim() },
-      alumniOf: [seo?.school, seo?.college].filter(Boolean).map((n) => ({ "@type": "EducationalOrganization", name: n })),
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: (seo?.location || "").split(",")[0]?.trim(),
+        addressCountry: (seo?.location || "").split(",")[1]?.trim(),
+      },
+      alumniOf: [seo?.school, seo?.college]
+        .filter(Boolean)
+        .map((n) => ({ "@type": "EducationalOrganization", name: n })),
       sameAs,
       ...(seo?.jobTitle ? { jobTitle: seo.jobTitle } : {}),
       ...(seo?.gender ? { gender: seo.gender } : {}),
@@ -35,11 +44,29 @@ export const Route = createFileRoute("/")({
       ...(seo?.birthDate ? { birthDate: seo.birthDate } : {}),
       ...(seo?.email ? { email: `mailto:${seo.email}` } : {}),
       knowsLanguage: seo?.languages ?? [],
-      knowsAbout: [...new Set([...(seo?.knowsAbout ?? []), ...(seo?.hobbies ?? []), ...(seo?.favorites ?? []), ...(seo?.includeSiteSkills ? (d?.skills.groups ?? []).flatMap((g) => g.items.map((i) => i.name)) : [])])],
-      award: [...(seo?.awards ?? []), ...(seo?.includeSiteAchievements ? (d?.achievements ?? []).map((a) => a.title) : [])],
+      knowsAbout: [
+        ...new Set([
+          ...(seo?.knowsAbout ?? []),
+          ...(seo?.hobbies ?? []),
+          ...(seo?.favorites ?? []),
+          ...(seo?.includeSiteSkills
+            ? (d?.skills.groups ?? []).flatMap((g) => g.items.map((i) => i.name))
+            : []),
+        ]),
+      ],
+      award: [
+        ...(seo?.awards ?? []),
+        ...(seo?.includeSiteAchievements ? (d?.achievements ?? []).map((a) => a.title) : []),
+      ],
       memberOf: (seo?.memberOf ?? []).map((n) => ({ "@type": "Organization", name: n })),
     };
-    const site = { "@context": "https://schema.org", "@type": "WebSite", name, alternateName: seo?.alternateNames ?? [], url };
+    const site = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name,
+      alternateName: seo?.alternateNames ?? [],
+      url,
+    };
     return {
       meta: [
         { title },
@@ -59,10 +86,18 @@ export const Route = createFileRoute("/")({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
-        ...(img ? [{ property: "og:image", content: img }, { name: "twitter:image", content: img }] : []),
+        ...(img
+          ? [
+              { property: "og:image", content: img },
+              { name: "twitter:image", content: img },
+            ]
+          : []),
       ],
       links: [{ rel: "canonical", href: url + "/" }],
-      scripts: [{ type: "application/ld+json", children: JSON.stringify(person) }, { type: "application/ld+json", children: JSON.stringify(site) }],
+      scripts: [
+        { type: "application/ld+json", children: JSON.stringify(person) },
+        { type: "application/ld+json", children: JSON.stringify(site) },
+      ],
     };
   },
   component: Index,

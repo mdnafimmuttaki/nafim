@@ -10,6 +10,8 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { Analytics } from "@vercel/analytics/react";
+
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -83,10 +85,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Md. Nafim Muttaki — Portfolio" },
-      { name: "description", content: "Tactical HUD portfolio and developer dashboard of Md. Nafim Muttaki." },
+      {
+        name: "description",
+        content: "Tactical HUD portfolio and developer dashboard of Md. Nafim Muttaki.",
+      },
       { name: "author", content: "Md. Nafim Muttaki" },
       { property: "og:title", content: "Md. Nafim Muttaki — Portfolio" },
-      { property: "og:description", content: "Tactical HUD portfolio and developer dashboard of Md. Nafim Muttaki." },
+      {
+        property: "og:description",
+        content: "Tactical HUD portfolio and developer dashboard of Md. Nafim Muttaki.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -113,6 +121,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Scripts />
+        <Analytics />
       </body>
     </html>
   );

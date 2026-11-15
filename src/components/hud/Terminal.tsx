@@ -25,7 +25,9 @@ const NEOFETCH_ART = String.raw`   _  __
 
 export function Terminal({ open, onClose, data, tabs, onTab, onTheme, onMatrix }: Props) {
   const t = data.settings.terminal;
-  const [lines, setLines] = useState<Line[]>(() => t.motd.split("\n").map((m) => ({ kind: "ok" as const, text: m })));
+  const [lines, setLines] = useState<Line[]>(() =>
+    t.motd.split("\n").map((m) => ({ kind: "ok" as const, text: m })),
+  );
   const [input, setInput] = useState("");
   const [hist, setHist] = useState<string[]>([]);
   const [hi, setHi] = useState(-1);
@@ -92,7 +94,9 @@ export function Terminal({ open, onClose, data, tabs, onTab, onTheme, onMatrix }
       case "ls":
         return print(out(tabs.map((x) => x.id).join("  ")));
       case "cd": {
-        const target = tabs.find((x) => x.id === arg.toLowerCase() || x.label.toLowerCase() === arg.toLowerCase());
+        const target = tabs.find(
+          (x) => x.id === arg.toLowerCase() || x.label.toLowerCase() === arg.toLowerCase(),
+        );
         if (!target) return print({ kind: "err", text: `cd: no such section: ${arg}` });
         onTab(target.id);
         return print({ kind: "ok", text: `→ /${target.id}` });
@@ -106,8 +110,23 @@ export function Terminal({ open, onClose, data, tabs, onTab, onTheme, onMatrix }
       case "socials":
         return print(...data.links.map((l) => out(`  ${l.title.padEnd(14)} ${l.url}`)));
       case "theme":
-        if (!["light", "dark", "glass", "obsidian", "terminal", "nordic", "sunset", "kraft", "custom"].includes(arg))
-          return print({ kind: "err", text: "usage: theme <light|dark|glass|obsidian|terminal|nordic|sunset|kraft>" });
+        if (
+          ![
+            "light",
+            "dark",
+            "glass",
+            "obsidian",
+            "terminal",
+            "nordic",
+            "sunset",
+            "kraft",
+            "custom",
+          ].includes(arg)
+        )
+          return print({
+            kind: "err",
+            text: "usage: theme <light|dark|glass|obsidian|terminal|nordic|sunset|kraft>",
+          });
         onTheme(arg);
         return print({ kind: "ok", text: `theme → ${arg}` });
       case "ip":
@@ -132,7 +151,10 @@ export function Terminal({ open, onClose, data, tabs, onTab, onTheme, onMatrix }
         onClose();
         return;
       case "sudo":
-        return print({ kind: "err", text: `${p.handle} is not in the sudoers file. This incident will be reported. 🚨` });
+        return print({
+          kind: "err",
+          text: `${p.handle} is not in the sudoers file. This incident will be reported. 🚨`,
+        });
       case "rm":
         return print({ kind: "err", text: "nice try." });
       case "clear":
@@ -140,7 +162,10 @@ export function Terminal({ open, onClose, data, tabs, onTab, onTheme, onMatrix }
       case "exit":
         return onClose();
       default:
-        { const egg = eggOutput(name.toLowerCase(), p.handle); if (egg !== null) return print(...egg.split("\n").map(out)); }
+        {
+          const egg = eggOutput(name.toLowerCase(), p.handle);
+          if (egg !== null) return print(...egg.split("\n").map(out));
+        }
         return print({ kind: "err", text: `command not found: ${name}. try 'help'` });
     }
   };
@@ -154,7 +179,11 @@ export function Terminal({ open, onClose, data, tabs, onTab, onTheme, onMatrix }
           [esc] close
         </button>
       </div>
-      <div ref={bodyRef} className="h-[calc(55vh-88px)] overflow-y-auto px-4 py-3" onClick={() => inputRef.current?.focus()}>
+      <div
+        ref={bodyRef}
+        className="h-[calc(55vh-88px)] overflow-y-auto px-4 py-3"
+        onClick={() => inputRef.current?.focus()}
+      >
         {lines.map((l, i) => (
           <div
             key={i}

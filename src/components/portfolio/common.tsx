@@ -21,7 +21,15 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-export function SectionTitle({ code, title, children }: { code: string; title: string; children?: ReactNode }) {
+export function SectionTitle({
+  code,
+  title,
+  children,
+}: {
+  code: string;
+  title: string;
+  children?: ReactNode;
+}) {
   return (
     <div className="mb-4 flex flex-col items-center gap-2 text-center">
       <div>
@@ -38,13 +46,23 @@ export function Panel({ children, className = "" }: { children: ReactNode; class
 }
 
 export function Empty({ label = "No entries yet." }: { label?: string }) {
-  return <div className="hud-card p-8 text-center font-mono text-sm text-muted-foreground">// {label}</div>;
+  return (
+    <div className="hud-card p-8 text-center font-mono text-sm text-muted-foreground">
+      // {label}
+    </div>
+  );
 }
 
 export function Progress({ value }: { value: number }) {
   const v = Math.max(0, Math.min(100, value));
   return (
-    <div className="progress-track" role="progressbar" aria-valuenow={v} aria-valuemin={0} aria-valuemax={100}>
+    <div
+      className="progress-track"
+      role="progressbar"
+      aria-valuenow={v}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
       <div className="progress-fill" style={{ width: `${v}%` }} />
     </div>
   );
@@ -85,7 +103,15 @@ export function handleFromUrl(url: string) {
   }
 }
 
-export function ExtLink({ href, children, className = "" }: { href: string; children: ReactNode; className?: string }) {
+export function ExtLink({
+  href,
+  children,
+  className = "",
+}: {
+  href: string;
+  children: ReactNode;
+  className?: string;
+}) {
   if (!href) return <span className={className}>{children}</span>;
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={className}>

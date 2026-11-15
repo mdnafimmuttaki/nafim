@@ -4,8 +4,13 @@ import { mergeData } from "@/lib/content";
 
 describe("secret interaction rules", () => {
   it("triggers only the full matrix word and allows repeating", () => {
-    let buffer = ""; let count = 0;
-    for (const key of "matriXmatrix") { const result = advanceSequence(buffer, key); buffer = result.buffer; if (result.triggered) count++; }
+    let buffer = "";
+    let count = 0;
+    for (const key of "matriXmatrix") {
+      const result = advanceSequence(buffer, key);
+      buffer = result.buffer;
+      if (result.triggered) count++;
+    }
     expect(count).toBe(2);
     expect(advanceSequence("matr", "q").triggered).toBe(false);
   });
@@ -16,7 +21,11 @@ describe("secret interaction rules", () => {
   });
   it("keeps full motion on by default for older saved documents", () => {
     expect(mergeData({ settings: { effects: {} } }).settings.effects.reducedMotion).toBe(false);
-    expect(mergeData({ settings: { effects: { reducedMotion: true } } }).settings.effects.reducedMotion).toBe(true);
+    expect(
+      mergeData({ settings: { effects: { reducedMotion: true } } }).settings.effects.reducedMotion,
+    ).toBe(true);
   });
-  it("includes all seven uploaded interactions", () => { expect(INTERACTION_EGGS).toHaveLength(7); });
+  it("includes all seven uploaded interactions", () => {
+    expect(INTERACTION_EGGS).toHaveLength(7);
+  });
 });

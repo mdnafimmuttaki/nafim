@@ -1,4 +1,13 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { Megaphone, WifiOff } from "lucide-react";
 import { toast } from "sonner";
 import type { SiteData, TabId } from "@/lib/content";
@@ -32,7 +41,9 @@ import {
 import { AudioSection, GuestbookSection } from "./sections-interactive";
 
 const TAB_KEY = "hud-tab";
-const EasterEggs = lazy(() => import("@/components/hud/EasterEggs").then((module) => ({ default: module.EasterEggs })));
+const EasterEggs = lazy(() =>
+  import("@/components/hud/EasterEggs").then((module) => ({ default: module.EasterEggs })),
+);
 
 function renderSection(id: TabId, data: SiteData): ReactNode {
   switch (id) {
@@ -75,7 +86,11 @@ export function Portfolio({ data, preview = false }: { data: SiteData; preview?:
   return (
     <AudioProvider
       tracks={data.audio.tracks}
-      defaults={{ volume: data.audio.volume, shuffle: data.audio.shuffle, autoplay: data.audio.autoplay }}
+      defaults={{
+        volume: data.audio.volume,
+        shuffle: data.audio.shuffle,
+        autoplay: data.audio.autoplay,
+      }}
     >
       <PortfolioInner data={data} preview={preview} />
     </AudioProvider>
@@ -86,7 +101,12 @@ function PortfolioInner({ data, preview }: { data: SiteData; preview: boolean })
   const s = data.settings;
   const fx = s.effects;
   const { mode, setMode, toggleMode: toggle } = useThemeMode(data.theme, !preview);
-  const backdrop = mode === "dark" && fx.background && !fx.reducedMotion ? <TopoCanvas /> : <div className="glass-backdrop" aria-hidden />;
+  const backdrop =
+    mode === "dark" && fx.background && !fx.reducedMotion ? (
+      <TopoCanvas />
+    ) : (
+      <div className="glass-backdrop" aria-hidden />
+    );
   const tabs = useMemo(() => data.tabs.filter((t) => t.visible), [data.tabs]);
   const [active, setActive] = useState<TabId>(tabs[0]?.id ?? "about");
   const [termOpen, setTermOpen] = useState(false);
@@ -138,10 +158,19 @@ function PortfolioInner({ data, preview }: { data: SiteData; preview: boolean })
       history.replaceState(null, "", `#${id}`);
       const top = navRef.current?.getBoundingClientRect().top ?? 0;
       if (scrollToNav && (top < 0 || top > window.innerHeight * 0.6)) {
-        navRef.current?.scrollIntoView({ behavior: fx.reducedMotion ? "instant" : "smooth", block: "start" });
+        navRef.current?.scrollIntoView({
+          behavior: fx.reducedMotion ? "instant" : "smooth",
+          block: "start",
+        });
       }
       if (scrollToNav) {
-        document.getElementById(`tab-${id}`)?.scrollIntoView({ behavior: fx.reducedMotion ? "instant" : "smooth", block: "nearest", inline: "center" });
+        document
+          .getElementById(`tab-${id}`)
+          ?.scrollIntoView({
+            behavior: fx.reducedMotion ? "instant" : "smooth",
+            block: "nearest",
+            inline: "center",
+          });
       }
     },
     [tabs, fx.reducedMotion],
@@ -154,7 +183,10 @@ function PortfolioInner({ data, preview }: { data: SiteData; preview: boolean })
       const el = document.getElementById("links-content");
       if (!el) return;
       const target = Math.max(0, el.getBoundingClientRect().top + window.scrollY - 80);
-      if (fx.reducedMotion) { window.scrollTo({ top: target, behavior: "instant" }); return; }
+      if (fx.reducedMotion) {
+        window.scrollTo({ top: target, behavior: "instant" });
+        return;
+      }
       const start = window.scrollY;
       const dist = target - start;
       const dur = Math.min(1100, 500 + Math.abs(dist) * 0.4);
@@ -269,7 +301,12 @@ function PortfolioInner({ data, preview }: { data: SiteData; preview: boolean })
           <div className="border-b border-signal/40 bg-signal/10 px-4 py-2 text-center font-mono text-xs text-signal">
             <Megaphone className="mr-2 inline h-3.5 w-3.5" />
             {s.announcement.link ? (
-              <a href={s.announcement.link} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:underline">
+              <a
+                href={s.announcement.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline-offset-4 hover:underline"
+              >
                 {s.announcement.text}
               </a>
             ) : (
@@ -322,7 +359,11 @@ function PortfolioInner({ data, preview }: { data: SiteData; preview: boolean })
 
           <footer className="border-t pt-4 text-center font-mono text-xs text-muted-foreground">
             © {data.profile.name} · {data.profile.location}
-            {fx.easterEggs && <Suspense fallback={null}><EasterEggs data={data} active={active} /></Suspense>}
+            {fx.easterEggs && (
+              <Suspense fallback={null}>
+                <EasterEggs data={data} active={active} />
+              </Suspense>
+            )}
           </footer>
         </main>
       </div>

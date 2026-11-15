@@ -1,6 +1,18 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowUpRight, BookOpen, Code2, Eye, GraduationCap, Hammer, Heart, Star, Target, Users, type LucideIcon } from "lucide-react";
+import {
+  ArrowUpRight,
+  BookOpen,
+  Code2,
+  Eye,
+  GraduationCap,
+  Hammer,
+  Heart,
+  Star,
+  Target,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import type { SiteData } from "@/lib/content";
 import { Empty, ExtLink, Panel, SectionTitle, detectPlatform, handleFromUrl } from "./common";
 
@@ -12,7 +24,9 @@ export function AboutSection({ data }: { data: SiteData }) {
         <h2 className="mb-3 text-lg font-semibold tracking-tight">Overview</h2>
         <p className="text-sm leading-relaxed text-muted-foreground sm:text-[15px]">{a.overview}</p>
         {a.philosophy && (
-          <blockquote className="mt-4 border-l-2 border-primary pl-4 font-mono text-sm text-primary">“{a.philosophy}”</blockquote>
+          <blockquote className="mt-4 border-l-2 border-primary pl-4 font-mono text-sm text-primary">
+            “{a.philosophy}”
+          </blockquote>
         )}
       </Panel>
       <div className="grid gap-4 md:grid-cols-2">
@@ -55,7 +69,15 @@ export function AboutSection({ data }: { data: SiteData }) {
 function LinkIcon({ favicon, Icon }: { favicon: string; Icon: LucideIcon }) {
   const [failed, setFailed] = useState(false);
   if (favicon && !failed) {
-    return <img src={favicon} alt="" loading="lazy" className="h-5 w-5 object-contain" onError={() => setFailed(true)} />;
+    return (
+      <img
+        src={favicon}
+        alt=""
+        loading="lazy"
+        className="h-5 w-5 object-contain"
+        onError={() => setFailed(true)}
+      />
+    );
   }
   return <Icon className="h-4 w-4" />;
 }
@@ -128,7 +150,8 @@ function embedSrc(platform: string, url: string) {
     const m = url.match(/instagram\.com\/(p|reel)\/([^/?#]+)/);
     return m ? `https://www.instagram.com/${m[1]}/${m[2]}/embed` : null;
   }
-  if (platform === "facebook") return `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(url)}&show_text=true&width=500`;
+  if (platform === "facebook")
+    return `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(url)}&show_text=true&width=500`;
   if (platform === "youtube") {
     const m = url.match(/(?:v=|youtu\.be\/|shorts\/)([\w-]{6,})/);
     return m ? `https://www.youtube-nocookie.com/embed/${m[1]}` : null;
@@ -144,8 +167,12 @@ export function SocialSection({ data }: { data: SiteData }) {
     staleTime: 1000 * 60 * 10,
     queryFn: async () => {
       const [u, r] = await Promise.all([
-        fetch(`https://api.github.com/users/${user}`).then((x) => (x.ok ? (x.json() as Promise<GhUser>) : Promise.reject(new Error("gh")))),
-        fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=6`).then((x) => (x.ok ? (x.json() as Promise<GhRepo[]>) : [])),
+        fetch(`https://api.github.com/users/${user}`).then((x) =>
+          x.ok ? (x.json() as Promise<GhUser>) : Promise.reject(new Error("gh")),
+        ),
+        fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=6`).then((x) =>
+          x.ok ? (x.json() as Promise<GhRepo[]>) : [],
+        ),
       ]);
       return { u, r };
     },
@@ -155,12 +182,25 @@ export function SocialSection({ data }: { data: SiteData }) {
       <SectionTitle code="03 // SOCIAL" title="Signal feed" />
       {user && (
         <Panel className="hud-corners">
-          {gh.isLoading && <div className="font-mono text-sm text-muted-foreground">fetching github telemetry…</div>}
-          {gh.isError && <div className="font-mono text-sm text-signal">github api rate-limited or user not found.</div>}
+          {gh.isLoading && (
+            <div className="font-mono text-sm text-muted-foreground">
+              fetching github telemetry…
+            </div>
+          )}
+          {gh.isError && (
+            <div className="font-mono text-sm text-signal">
+              github api rate-limited or user not found.
+            </div>
+          )}
           {gh.data && (
             <div className="space-y-4">
               <div className="flex items-center gap-4">
-                <img src={gh.data.u.avatar_url} alt="" className="h-14 w-14 rounded-md border" loading="lazy" />
+                <img
+                  src={gh.data.u.avatar_url}
+                  alt=""
+                  className="h-14 w-14 rounded-md border"
+                  loading="lazy"
+                />
                 <div className="min-w-0 flex-1">
                   <ExtLink href={gh.data.u.html_url} className="font-semibold hover:text-primary">
                     {gh.data.u.name ?? gh.data.u.login}
@@ -187,14 +227,20 @@ export function SocialSection({ data }: { data: SiteData }) {
               </div>
               <div className="grid gap-2 sm:grid-cols-2">
                 {gh.data.r.map((r) => (
-                  <ExtLink key={r.id} href={r.html_url} className="rounded-md border bg-surface p-3 hover:border-primary/60">
+                  <ExtLink
+                    key={r.id}
+                    href={r.html_url}
+                    className="rounded-md border bg-surface p-3 hover:border-primary/60"
+                  >
                     <div className="flex items-center justify-between font-mono text-sm">
                       <span className="truncate">{r.name}</span>
                       <span className="flex items-center gap-1 text-xs text-signal">
                         <Star className="h-3 w-3" /> {r.stargazers_count}
                       </span>
                     </div>
-                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{r.description ?? "—"}</p>
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                      {r.description ?? "—"}
+                    </p>
                     {r.language && <span className="hud-badge mt-2">{r.language}</span>}
                   </ExtLink>
                 ))}
@@ -218,7 +264,10 @@ export function SocialSection({ data }: { data: SiteData }) {
                   allow="encrypted-media; picture-in-picture"
                 />
               ) : (
-                <ExtLink href={e.url} className="block truncate font-mono text-sm text-primary hover:underline">
+                <ExtLink
+                  href={e.url}
+                  className="block truncate font-mono text-sm text-primary hover:underline"
+                >
                   {e.url}
                 </ExtLink>
               )}
@@ -246,9 +295,17 @@ export function ProjectsSection({ data }: { data: SiteData }) {
       {!data.projects.length && <Empty />}
       <div className="grid gap-4 md:grid-cols-2">
         {data.projects.map((p) => (
-          <article key={p.id} className="hud-card group overflow-hidden transition-colors hover:border-primary/60">
+          <article
+            key={p.id}
+            className="hud-card group overflow-hidden transition-colors hover:border-primary/60"
+          >
             {p.image ? (
-              <img src={p.image} alt={p.title} loading="lazy" className="aspect-video w-full border-b object-cover" />
+              <img
+                src={p.image}
+                alt={p.title}
+                loading="lazy"
+                className="aspect-video w-full border-b object-cover"
+              />
             ) : (
               <div className="hud-gridbg flex aspect-video items-center justify-center border-b bg-surface font-mono text-xs text-muted-foreground">
                 [{p.category.toUpperCase()}]
@@ -302,7 +359,12 @@ export function GamingSection({ data }: { data: SiteData }) {
         {data.games.map((g) => (
           <div key={g.id} className="hud-card flex gap-3 p-3">
             {g.image ? (
-              <img src={g.image} alt="" loading="lazy" className="h-20 w-16 shrink-0 rounded-md border object-cover" />
+              <img
+                src={g.image}
+                alt=""
+                loading="lazy"
+                className="h-20 w-16 shrink-0 rounded-md border object-cover"
+              />
             ) : (
               <div className="flex h-20 w-16 shrink-0 items-center justify-center rounded-md border bg-surface font-mono text-xs text-muted-foreground">
                 {g.platform}
@@ -311,11 +373,18 @@ export function GamingSection({ data }: { data: SiteData }) {
             <div className="min-w-0 flex-1 space-y-1">
               <div className="flex items-center gap-2">
                 <h3 className="truncate font-semibold">{g.title}</h3>
-                {g.favorite && <Heart className="h-3.5 w-3.5 shrink-0 fill-signal text-signal" aria-label="Favorite" />}
+                {g.favorite && (
+                  <Heart
+                    className="h-3.5 w-3.5 shrink-0 fill-signal text-signal"
+                    aria-label="Favorite"
+                  />
+                )}
               </div>
               <div className="flex flex-wrap gap-1.5">
                 <span className="hud-badge">{g.platform}</span>
-                <span className={`hud-badge ${g.status === "Playing" ? "hud-badge-primary" : g.status === "Completed" ? "hud-badge-signal" : ""}`}>
+                <span
+                  className={`hud-badge ${g.status === "Playing" ? "hud-badge-primary" : g.status === "Completed" ? "hud-badge-signal" : ""}`}
+                >
                   {g.status}
                 </span>
                 <span className="hud-badge">{g.hours}h</span>
@@ -332,7 +401,12 @@ export function GamingSection({ data }: { data: SiteData }) {
 
 export function NowSection({ data }: { data: SiteData }) {
   const n = data.now;
-  const tone = n.availability === "open" ? "hud-badge-primary" : n.availability === "busy" ? "hud-badge-signal" : "";
+  const tone =
+    n.availability === "open"
+      ? "hud-badge-primary"
+      : n.availability === "busy"
+        ? "hud-badge-signal"
+        : "";
   const rows = [
     ["Focus", n.focus, Target],
     ["Building", n.building, Hammer],

@@ -1,4 +1,13 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import type { Track } from "@/lib/content";
 import { ChipSynth } from "@/lib/synth";
 
@@ -135,7 +144,8 @@ export function AudioProvider({
       setBpmOverride,
       getProgress: () => {
         const t = tracks[index];
-        if (t?.url && audioEl.current?.duration) return audioEl.current.currentTime / audioEl.current.duration;
+        if (t?.url && audioEl.current?.duration)
+          return audioEl.current.currentTime / audioEl.current.duration;
         return synth.current?.progress() ?? 0;
       },
       getDuration: () => {

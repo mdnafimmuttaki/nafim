@@ -1,11 +1,19 @@
 import { useMemo, useState, type CSSProperties } from "react";
 import { Award, BadgeCheck, Trophy } from "lucide-react";
 import type { SiteData } from "@/lib/content";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Empty, ExtLink, Panel, Progress, SectionTitle, detectPlatform } from "./common";
 
 export function ResourcesSection({ data }: { data: SiteData }) {
-  const cats = useMemo(() => Array.from(new Set(data.resources.map((r) => r.category || "Misc"))), [data.resources]);
+  const cats = useMemo(
+    () => Array.from(new Set(data.resources.map((r) => r.category || "Misc"))),
+    [data.resources],
+  );
   const [cat, setCat] = useState<string>("all");
   const list = data.resources.filter((r) => cat === "all" || (r.category || "Misc") === cat);
   return (
@@ -23,7 +31,11 @@ export function ResourcesSection({ data }: { data: SiteData }) {
         {list.map((r) => {
           const { Icon } = detectPlatform(r.url);
           return (
-            <ExtLink key={r.id} href={r.url} className="hud-card flex gap-3 p-3 hover:border-primary/60">
+            <ExtLink
+              key={r.id}
+              href={r.url}
+              className="hud-card flex gap-3 p-3 hover:border-primary/60"
+            >
               <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
@@ -83,7 +95,9 @@ export function SkillsSection({ data }: { data: SiteData }) {
       <SectionTitle code="09 // SKILLS" title="Capability matrix" />
       <div className="grid gap-4 md:grid-cols-2">
         {data.skills.groups.map((g) => {
-          const avg = g.items.length ? Math.round(g.items.reduce((s, i) => s + i.level, 0) / g.items.length) : 0;
+          const avg = g.items.length
+            ? Math.round(g.items.reduce((s, i) => s + i.level, 0) / g.items.length)
+            : 0;
           return (
             <Panel key={g.id}>
               <div className="mb-3 flex items-center justify-between">
@@ -135,7 +149,9 @@ export function TimelineSection({ data }: { data: SiteData }) {
             <span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full border-2 border-primary bg-background" />
             <div className="flex flex-wrap items-center gap-2">
               <span className="font-mono text-sm text-primary">{t.date}</span>
-              <span className={`hud-badge ${t.kind === "career" ? "hud-badge-primary" : t.kind === "education" ? "hud-badge-signal" : ""}`}>
+              <span
+                className={`hud-badge ${t.kind === "career" ? "hud-badge-primary" : t.kind === "education" ? "hud-badge-signal" : ""}`}
+              >
                 {t.kind}
               </span>
             </div>
@@ -158,14 +174,18 @@ export function GoalsSection({ data }: { data: SiteData }) {
           <Panel key={g.id}>
             <div className="mb-2 flex items-center justify-between gap-2">
               <h3 className="font-medium">{g.title}</h3>
-              <span className={`hud-badge ${g.progress >= 100 ? "hud-badge-primary" : ""}`}>{g.category}</span>
+              <span className={`hud-badge ${g.progress >= 100 ? "hud-badge-primary" : ""}`}>
+                {g.category}
+              </span>
             </div>
             {g.description && <p className="mb-2 text-sm text-muted-foreground">{g.description}</p>}
             <div className="flex items-center gap-3">
               <div className="flex-1">
                 <Progress value={g.progress} />
               </div>
-              <span className="font-mono text-xs text-primary">{g.progress >= 100 ? "DONE" : `${g.progress}%`}</span>
+              <span className="font-mono text-xs text-primary">
+                {g.progress >= 100 ? "DONE" : `${g.progress}%`}
+              </span>
             </div>
           </Panel>
         ))}
@@ -208,13 +228,26 @@ export function AlbumSection({ data }: { data: SiteData }) {
         {data.album.map((a) => {
           const hue = { "--hue": a.hue } as CSSProperties;
           return (
-            <button key={a.id} onClick={() => setOpen(a.id)} className="hud-card group overflow-hidden text-left" style={hue}>
+            <button
+              key={a.id}
+              onClick={() => setOpen(a.id)}
+              className="hud-card group overflow-hidden text-left"
+              style={hue}
+            >
               {a.image ? (
-                <img src={a.image} alt={a.title} loading="lazy" className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.03]" />
+                <img
+                  src={a.image}
+                  alt={a.title}
+                  loading="lazy"
+                  className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.03]"
+                />
               ) : (
                 <div
                   className="hud-gridbg flex aspect-square items-center justify-center font-mono text-xs"
-                  style={{ background: `linear-gradient(135deg, hsl(var(--hue) 60% 50% / 0.25), transparent)`, color: `hsl(var(--hue) 80% 60%)` }}
+                  style={{
+                    background: `linear-gradient(135deg, hsl(var(--hue) 60% 50% / 0.25), transparent)`,
+                    color: `hsl(var(--hue) 80% 60%)`,
+                  }}
                 >
                   [{a.kind}]
                 </div>
@@ -223,7 +256,10 @@ export function AlbumSection({ data }: { data: SiteData }) {
                 <span className="truncate text-sm">{a.title}</span>
                 <span
                   className="hud-badge"
-                  style={{ color: `hsl(var(--hue) 80% 60%)`, borderColor: `hsl(var(--hue) 70% 50% / 0.5)` }}
+                  style={{
+                    color: `hsl(var(--hue) 80% 60%)`,
+                    borderColor: `hsl(var(--hue) 70% 50% / 0.5)`,
+                  }}
                 >
                   {a.kind}
                 </span>
@@ -233,9 +269,21 @@ export function AlbumSection({ data }: { data: SiteData }) {
         })}
       </div>
       {item && (
-        <div className="fixed inset-0 z-[75] flex items-center justify-center bg-background/90 p-4" onClick={() => setOpen(null)}>
-          <div className="hud-card hud-corners max-w-3xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            {item.image && <img src={item.image} alt={item.title} className="max-h-[70vh] w-full object-contain" />}
+        <div
+          className="fixed inset-0 z-[75] flex items-center justify-center bg-background/90 p-4"
+          onClick={() => setOpen(null)}
+        >
+          <div
+            className="hud-card hud-corners max-w-3xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {item.image && (
+              <img
+                src={item.image}
+                alt={item.title}
+                className="max-h-[70vh] w-full object-contain"
+              />
+            )}
             <div className="p-4">
               <h3 className="font-semibold">{item.title}</h3>
               <p className="text-sm text-muted-foreground">{item.caption}</p>
@@ -259,7 +307,9 @@ export function FaqSection({ data }: { data: SiteData }) {
         {data.faq.map((f) => (
           <AccordionItem key={f.id} value={f.id}>
             <AccordionTrigger className="text-left font-medium">{f.q}</AccordionTrigger>
-            <AccordionContent className="whitespace-pre-line text-muted-foreground">{f.a}</AccordionContent>
+            <AccordionContent className="whitespace-pre-line text-muted-foreground">
+              {f.a}
+            </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>

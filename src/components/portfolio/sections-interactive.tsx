@@ -22,7 +22,8 @@ function Scope() {
     let raf = 0;
     let last = 0;
     const buf = new Uint8Array(256);
-    const color = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#8dff5a";
+    const color =
+      getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#8dff5a";
     const draw = (now: number) => {
       raf = requestAnimationFrame(draw);
       if (now - last < 33 || document.hidden) return;
@@ -70,7 +71,8 @@ export function AudioSection() {
             <div className="hud-label">now loaded</div>
             <div className="truncate font-mono text-lg text-primary">{cur?.title ?? "—"}</div>
             <div className="text-xs text-muted-foreground">
-              {cur?.artist} · {cur?.url ? "stream" : `${cur?.wave} · ${a.bpmOverride ?? cur?.bpm} bpm`}
+              {cur?.artist} ·{" "}
+              {cur?.url ? "stream" : `${cur?.wave} · ${a.bpmOverride ?? cur?.bpm} bpm`}
             </div>
           </div>
           <span className={`hud-badge ${a.playing ? "hud-badge-primary" : ""}`}>
@@ -108,7 +110,13 @@ export function AudioSection() {
           </Button>
           <div className="ml-auto flex min-w-[160px] items-center gap-2">
             <Volume2 className="h-4 w-4 text-muted-foreground" />
-            <Slider value={[a.volume * 100]} max={100} step={1} onValueChange={([v = 0]) => a.setVolume(v / 100)} aria-label="Volume" />
+            <Slider
+              value={[a.volume * 100]}
+              max={100}
+              step={1}
+              onValueChange={([v = 0]) => a.setVolume(v / 100)}
+              aria-label="Volume"
+            />
           </div>
         </div>
         {!cur?.url && (
@@ -138,8 +146,20 @@ export function AudioSection() {
             className={`flex w-full items-center gap-3 px-4 py-2.5 text-left font-mono text-sm hover:bg-accent ${i === a.index ? "text-primary" : ""}`}
           >
             <span className="w-6 text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-            {t.cover && <img src={t.cover} alt="" loading="lazy" className="h-9 w-9 shrink-0 rounded object-cover" />}
-            <span className="min-w-0 flex-1"><span className="block truncate">{t.title}</span>{t.artist && <span className="block truncate text-xs text-muted-foreground">{t.artist}</span>}</span>
+            {t.cover && (
+              <img
+                src={t.cover}
+                alt=""
+                loading="lazy"
+                className="h-9 w-9 shrink-0 rounded object-cover"
+              />
+            )}
+            <span className="min-w-0 flex-1">
+              <span className="block truncate">{t.title}</span>
+              {t.artist && (
+                <span className="block truncate text-xs text-muted-foreground">{t.artist}</span>
+              )}
+            </span>
             <span className="text-xs text-muted-foreground">{t.url ? "mp3" : t.wave}</span>
           </button>
         ))}
@@ -155,7 +175,13 @@ interface Entry {
   created_at: string;
 }
 
-export function GuestbookSection({ adminToken, onDelete }: { adminToken?: string; onDelete?: (id: string) => Promise<void> }) {
+export function GuestbookSection({
+  adminToken,
+  onDelete,
+}: {
+  adminToken?: string;
+  onDelete?: (id: string) => Promise<void>;
+}) {
   const qc = useQueryClient();
   const [name, setName] = useState("");
   const [msg, setMsg] = useState("");
@@ -213,8 +239,20 @@ export function GuestbookSection({ adminToken, onDelete }: { adminToken?: string
     <section className="space-y-4">
       <SectionTitle code="15 // GUESTBOOK" title="Leave a transmission" />
       <form onSubmit={submit} className="hud-card hud-corners space-y-3 p-4">
-        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="callsign / name" maxLength={40} className="font-mono" />
-        <Textarea value={msg} onChange={(e) => setMsg(e.target.value)} placeholder="your note…" maxLength={500} rows={3} />
+        <Input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="callsign / name"
+          maxLength={40}
+          className="font-mono"
+        />
+        <Textarea
+          value={msg}
+          onChange={(e) => setMsg(e.target.value)}
+          placeholder="your note…"
+          maxLength={500}
+          rows={3}
+        />
         <div className="flex items-center justify-between">
           <span className="hud-label">{msg.length}/500</span>
           <Button variant="hud" size="sm" disabled={busy} type="submit">
@@ -222,7 +260,9 @@ export function GuestbookSection({ adminToken, onDelete }: { adminToken?: string
           </Button>
         </div>
       </form>
-      {q.isLoading && <div className="font-mono text-sm text-muted-foreground">loading messages…</div>}
+      {q.isLoading && (
+        <div className="font-mono text-sm text-muted-foreground">loading messages…</div>
+      )}
       {q.data && !q.data.length && <Empty label="No transmissions yet. Be the first." />}
       <div className="space-y-2">
         {q.data?.map((e) => (
@@ -230,9 +270,15 @@ export function GuestbookSection({ adminToken, onDelete }: { adminToken?: string
             <div className="flex items-center justify-between gap-2">
               <span className="font-mono text-sm text-primary">{e.name}</span>
               <span className="flex items-center gap-2">
-                <span className="hud-label">{formatDistanceToNow(new Date(e.created_at), { addSuffix: true })}</span>
+                <span className="hud-label">
+                  {formatDistanceToNow(new Date(e.created_at), { addSuffix: true })}
+                </span>
                 {adminToken && onDelete && (
-                  <button aria-label="Delete entry" className="text-muted-foreground hover:text-destructive" onClick={() => onDelete(e.id)}>
+                  <button
+                    aria-label="Delete entry"
+                    className="text-muted-foreground hover:text-destructive"
+                    onClick={() => onDelete(e.id)}
+                  >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
                 )}

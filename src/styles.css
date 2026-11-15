@@ -105,7 +105,9 @@
     scroll-behavior: smooth;
   }
   body {
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
@@ -125,7 +127,10 @@
 
 @utility hud-card {
   position: relative;
-  --card-rest-shadow: var(--shadow, 0 12px 30px -22px color-mix(in oklab, var(--foreground) 42%, transparent));
+  --card-rest-shadow: var(
+    --shadow,
+    0 12px 30px -22px color-mix(in oklab, var(--foreground) 42%, transparent)
+  );
   background-color: color-mix(in oklab, var(--card) var(--card-alpha, 100%), transparent);
   background-image: linear-gradient(
     135deg,
@@ -135,7 +140,9 @@
   );
   border: var(--card-bw) solid color-mix(in oklab, var(--border) 80%, transparent);
   border-radius: var(--radius);
-  box-shadow: var(--card-rest-shadow), inset 0 1px 0 color-mix(in oklab, var(--foreground) 4%, transparent);
+  box-shadow:
+    var(--card-rest-shadow),
+    inset 0 1px 0 color-mix(in oklab, var(--foreground) 4%, transparent);
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease,
@@ -233,7 +240,9 @@
 }
 
 @utility hud-glow {
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent), 0 0 24px -6px var(--glow);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
+    0 0 24px -6px var(--glow);
 }
 
 @utility hud-gridbg {
@@ -291,14 +300,16 @@
 
 @utility block-cursor {
   cursor:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='20'><rect width='12' height='20' fill='%238dff5a' fill-opacity='0.85'/></svg>") 0 0,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='20'><rect width='12' height='20' fill='%238dff5a' fill-opacity='0.85'/></svg>")
+      0 0,
     auto;
   & a,
   & button,
   & [role="button"],
   & [role="tab"] {
     cursor:
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='20'><rect width='12' height='20' fill='%23ffb020' fill-opacity='0.9'/></svg>") 0 0,
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='20'><rect width='12' height='20' fill='%23ffb020' fill-opacity='0.9'/></svg>")
+        0 0,
       pointer;
   }
 }
@@ -320,7 +331,11 @@
 @utility banner-grid {
   background-image:
     linear-gradient(color-mix(in oklab, var(--primary) 22%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in oklab, var(--primary) 22%, transparent) 1px, transparent 1px);
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--primary) 22%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 21px 21px;
   -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
   mask-image: linear-gradient(to bottom, black 55%, transparent);
@@ -527,13 +542,24 @@
 .portfolio-shell [role="tabpanel"] .hud-card {
   animation: hud-card-enter 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
-.portfolio-shell [role="tabpanel"] .hud-card:nth-child(2) { animation-delay: 0.04s; }
-.portfolio-shell [role="tabpanel"] .hud-card:nth-child(3) { animation-delay: 0.08s; }
-.portfolio-shell [role="tabpanel"] .hud-card:nth-child(4) { animation-delay: 0.12s; }
-.portfolio-shell [role="tabpanel"] .hud-card:nth-child(5) { animation-delay: 0.16s; }
-.portfolio-shell [role="tabpanel"] .hud-card:nth-child(n + 6) { animation-delay: 0.2s; }
+.portfolio-shell [role="tabpanel"] .hud-card:nth-child(2) {
+  animation-delay: 0.04s;
+}
+.portfolio-shell [role="tabpanel"] .hud-card:nth-child(3) {
+  animation-delay: 0.08s;
+}
+.portfolio-shell [role="tabpanel"] .hud-card:nth-child(4) {
+  animation-delay: 0.12s;
+}
+.portfolio-shell [role="tabpanel"] .hud-card:nth-child(5) {
+  animation-delay: 0.16s;
+}
+.portfolio-shell [role="tabpanel"] .hud-card:nth-child(n + 6) {
+  animation-delay: 0.2s;
+}
 .portfolio-shell :where(button, [role="button"], a.hud-card) {
-  transition-property: color, background, background-color, border-color, box-shadow, opacity, transform;
+  transition-property:
+    color, background, background-color, border-color, box-shadow, opacity, transform;
   transition-duration: 0.22s;
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -573,17 +599,85 @@
   }
 }
 
-html[data-matrix] { --background: var(--matrix-dark); --card: var(--matrix-surface); --surface: var(--matrix-surface); --primary: var(--matrix-code); --foreground: var(--matrix-code); --card-foreground: var(--matrix-code); --primary-foreground: var(--matrix-dark); }
-.matrix-backdrop { background: var(--matrix-dark); opacity: 0.6; }
-#avatar { touch-action: manipulation; }
-#avatar.avatar-coffee { box-shadow: 0 0 30px var(--signal); border-radius: 50%; }
-#avatar.avatar-party > :first-child { animation: egg-spin 0.8s ease-in-out; }
-#avatar.avatar-party::after { content: "▀▀█▀▀"; position: absolute; left: 50%; top: 38%; transform: translateX(-50%); color: var(--matrix-dark); background: var(--foreground); font: bold 24px monospace; }
-#avatar.avatar-party::before { content: "✦ · ✧ ★ ✦ · ✧"; position: absolute; inset: -20px; color: var(--signal); font-size: 24px; text-align: center; animation: egg-confetti 1s ease-out both; pointer-events: none; }
-.egg-charging { background-image: linear-gradient(var(--primary), var(--primary)); background-repeat: no-repeat; background-position: bottom left; background-size: 0% 3px; animation: egg-charge 3s linear forwards; user-select: none; touch-action: none; }
-@keyframes egg-spin { to { transform: rotate(360deg); } }
-@keyframes egg-confetti { from { transform: scale(0.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
-@keyframes egg-charge { to { background-size: 100% 3px; } }
-html[data-owner-reduced-motion] { scroll-behavior: auto; }
-html[data-owner-reduced-motion] *, html[data-owner-reduced-motion] *::before, html[data-owner-reduced-motion] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-
+html[data-matrix] {
+  --background: var(--matrix-dark);
+  --card: var(--matrix-surface);
+  --surface: var(--matrix-surface);
+  --primary: var(--matrix-code);
+  --foreground: var(--matrix-code);
+  --card-foreground: var(--matrix-code);
+  --primary-foreground: var(--matrix-dark);
+}
+.matrix-backdrop {
+  background: var(--matrix-dark);
+  opacity: 0.6;
+}
+#avatar {
+  touch-action: manipulation;
+}
+#avatar.avatar-coffee {
+  box-shadow: 0 0 30px var(--signal);
+  border-radius: 50%;
+}
+#avatar.avatar-party > :first-child {
+  animation: egg-spin 0.8s ease-in-out;
+}
+#avatar.avatar-party::after {
+  content: "▀▀█▀▀";
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  transform: translateX(-50%);
+  color: var(--matrix-dark);
+  background: var(--foreground);
+  font: bold 24px monospace;
+}
+#avatar.avatar-party::before {
+  content: "✦ · ✧ ★ ✦ · ✧";
+  position: absolute;
+  inset: -20px;
+  color: var(--signal);
+  font-size: 24px;
+  text-align: center;
+  animation: egg-confetti 1s ease-out both;
+  pointer-events: none;
+}
+.egg-charging {
+  background-image: linear-gradient(var(--primary), var(--primary));
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  background-size: 0% 3px;
+  animation: egg-charge 3s linear forwards;
+  user-select: none;
+  touch-action: none;
+}
+@keyframes egg-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes egg-confetti {
+  from {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+@keyframes egg-charge {
+  to {
+    background-size: 100% 3px;
+  }
+}
+html[data-owner-reduced-motion] {
+  scroll-behavior: auto;
+}
+html[data-owner-reduced-motion] *,
+html[data-owner-reduced-motion] *::before,
+html[data-owner-reduced-motion] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}

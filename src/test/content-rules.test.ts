@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { mergeData, TAB_IDS } from "@/lib/content";
 import { signToken, verifyToken, passwordMatches } from "@/lib/admin-token";
-import { pushHistory, undoHistory, redoHistory, HISTORY_LIMIT, type HistoryState } from "@/hooks/use-history-state";
+import {
+  pushHistory,
+  undoHistory,
+  redoHistory,
+  HISTORY_LIMIT,
+  type HistoryState,
+} from "@/hooks/use-history-state";
 
 describe("mergeData", () => {
   it("fills every one of the 16 tabs for an empty document", () => {
@@ -11,14 +17,22 @@ describe("mergeData", () => {
   });
 
   it("keeps saved tab order, labels and visibility, and appends tabs missing from old data", () => {
-    const d = mergeData({ tabs: [{ id: "faq", label: "Q&A", visible: false }, { id: "about", label: "Me", visible: true }] });
+    const d = mergeData({
+      tabs: [
+        { id: "faq", label: "Q&A", visible: false },
+        { id: "about", label: "Me", visible: true },
+      ],
+    });
     expect(d.tabs[0]).toEqual({ id: "faq", label: "Q&A", visible: false });
     expect(d.tabs[1]?.label).toBe("Me");
     expect(d.tabs).toHaveLength(16);
   });
 
   it("keeps saved values and backfills new nested settings", () => {
-    const d = mergeData({ profile: { name: "Someone Else" }, settings: { effects: { scanlines: true } } });
+    const d = mergeData({
+      profile: { name: "Someone Else" },
+      settings: { effects: { scanlines: true } },
+    });
     expect(d.profile.name).toBe("Someone Else");
     expect(d.profile.handle).toBe("naphium");
     expect(d.settings.effects.scanlines).toBe(true);
@@ -30,7 +44,11 @@ describe("mergeData", () => {
   });
 
   it("backfills an empty favicon on links saved before favicon support", () => {
-    const d = mergeData({ links: [{ id: "old", title: "Site", url: "https://example.com", category: "other", handle: "" }] });
+    const d = mergeData({
+      links: [
+        { id: "old", title: "Site", url: "https://example.com", category: "other", handle: "" },
+      ],
+    });
     expect(d.links[0]?.favicon).toBe("");
   });
 });

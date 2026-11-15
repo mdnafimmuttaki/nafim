@@ -16,7 +16,14 @@ import { Slider } from "@/components/ui/slider";
 import { GuestbookSection } from "@/components/portfolio/sections-interactive";
 import { AllFieldsEditor, RawJsonEditor } from "./AllFields";
 import type { SearchKind } from "./ListSearch";
-import { AdminCtx, EditorCard, FieldLabel, ListEditor, ObjectFields, type FieldDef } from "./fields";
+import {
+  AdminCtx,
+  EditorCard,
+  FieldLabel,
+  ListEditor,
+  ObjectFields,
+  type FieldDef,
+} from "./fields";
 
 type Set = (fn: (d: SiteData) => SiteData) => void;
 interface EP {
@@ -47,7 +54,12 @@ function ProfileEditor({ draft, set }: EP) {
           { key: "siteUrl", label: "Site link (for copy)", type: "url" },
           { key: "avatarUrl", label: "Avatar", type: "image" },
           { key: "bannerUrl", label: "Banner", type: "image" },
-          { key: "presenceMode", label: "Presence source", type: "select", options: ["custom", "discord"] },
+          {
+            key: "presenceMode",
+            label: "Presence source",
+            type: "select",
+            options: ["custom", "discord"],
+          },
           { key: "discordId", label: "Discord user ID (Lanyard)", type: "text" },
           { key: "presenceStates", label: "Custom presence states (cycle)", type: "strings" },
           { key: "sourceUrl", label: "Source code URL", type: "url" },
@@ -69,22 +81,47 @@ function TabManager({ draft, set }: EP) {
     set((x) => ({ ...x, tabs: next }));
   };
   return (
-    <EditorCard title="Tab manager" desc="Reorder, rename and hide sections. The first 9 visible tabs get number-key shortcuts.">
+    <EditorCard
+      title="Tab manager"
+      desc="Reorder, rename and hide sections. The first 9 visible tabs get number-key shortcuts."
+    >
       <div className="space-y-1.5">
         {tabs.map((t, i) => (
-          <div key={t.id} className={`flex items-center gap-2 rounded-md border bg-surface/60 px-2 py-1.5 ${t.visible ? "" : "opacity-50"}`}>
-            <span className="w-6 font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+          <div
+            key={t.id}
+            className={`flex items-center gap-2 rounded-md border bg-surface/60 px-2 py-1.5 ${t.visible ? "" : "opacity-50"}`}
+          >
+            <span className="w-6 font-mono text-xs text-muted-foreground">
+              {String(i + 1).padStart(2, "0")}
+            </span>
             <span className="hud-badge w-24 justify-center">{t.id}</span>
             <Input
               value={t.label}
-              onChange={(e) => set((x) => ({ ...x, tabs: x.tabs.map((y) => (y.id === t.id ? { ...y, label: e.target.value } : y)) }))}
+              onChange={(e) =>
+                set((x) => ({
+                  ...x,
+                  tabs: x.tabs.map((y) => (y.id === t.id ? { ...y, label: e.target.value } : y)),
+                }))
+              }
               className="h-8"
               placeholder={TAB_LABELS[t.id]}
             />
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => move(i, -1)} aria-label="Move up">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => move(i, -1)}
+              aria-label="Move up"
+            >
               <ArrowUp />
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => move(i, 1)} aria-label="Move down">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => move(i, 1)}
+              aria-label="Move down"
+            >
               <ArrowDown />
             </Button>
             <Button
@@ -92,7 +129,12 @@ function TabManager({ draft, set }: EP) {
               size="icon"
               className="h-8 w-8"
               aria-label={t.visible ? "Hide tab" : "Show tab"}
-              onClick={() => set((x) => ({ ...x, tabs: x.tabs.map((y) => (y.id === t.id ? { ...y, visible: !y.visible } : y)) }))}
+              onClick={() =>
+                set((x) => ({
+                  ...x,
+                  tabs: x.tabs.map((y) => (y.id === t.id ? { ...y, visible: !y.visible } : y)),
+                }))
+              }
             >
               {t.visible ? <Eye /> : <EyeOff />}
             </Button>
@@ -103,7 +145,16 @@ function TabManager({ draft, set }: EP) {
   );
 }
 
-const COLOR_KEYS: (keyof ThemeColors)[] = ["background", "surface", "card", "primary", "accent", "text", "muted", "border"];
+const COLOR_KEYS: (keyof ThemeColors)[] = [
+  "background",
+  "surface",
+  "card",
+  "primary",
+  "accent",
+  "text",
+  "muted",
+  "border",
+];
 
 const COLOR_HINTS: Record<keyof ThemeColors, string> = {
   background: "Page background",
@@ -118,15 +169,39 @@ const COLOR_HINTS: Record<keyof ThemeColors, string> = {
 
 function PalettePreview({ c, radius }: { c: ThemeColors; radius: number }) {
   return (
-    <div className="space-y-2 p-3" style={{ background: c.background, color: c.text, borderRadius: radius, border: `1px solid ${c.border}` }}>
-      <div className="p-3" style={{ background: c.card, border: `1px solid ${c.border}`, borderRadius: radius }}>
+    <div
+      className="space-y-2 p-3"
+      style={{
+        background: c.background,
+        color: c.text,
+        borderRadius: radius,
+        border: `1px solid ${c.border}`,
+      }}
+    >
+      <div
+        className="p-3"
+        style={{ background: c.card, border: `1px solid ${c.border}`, borderRadius: radius }}
+      >
         <div className="flex items-center gap-2 text-sm font-bold">
-          Md. Nafim Muttaki <span className="h-2 w-2 rounded-full" style={{ background: c.accent }} />
+          Md. Nafim Muttaki{" "}
+          <span className="h-2 w-2 rounded-full" style={{ background: c.accent }} />
         </div>
-        <div className="text-xs" style={{ color: c.muted }}>Secondary text · @handle</div>
+        <div className="text-xs" style={{ color: c.muted }}>
+          Secondary text · @handle
+        </div>
         <div className="mt-2 flex gap-2">
-          <span className="px-3 py-1 text-xs font-semibold" style={{ background: c.primary, color: c.background, borderRadius: 999 }}>Contact</span>
-          <span className="px-3 py-1 text-xs" style={{ background: c.surface, borderRadius: radius }}>Tab</span>
+          <span
+            className="px-3 py-1 text-xs font-semibold"
+            style={{ background: c.primary, color: c.background, borderRadius: 999 }}
+          >
+            Contact
+          </span>
+          <span
+            className="px-3 py-1 text-xs"
+            style={{ background: c.surface, borderRadius: radius }}
+          >
+            Tab
+          </span>
         </div>
       </div>
     </div>
@@ -135,10 +210,15 @@ function PalettePreview({ c, radius }: { c: ThemeColors; radius: number }) {
 
 function ThemeEditor({ draft, set }: EP) {
   const th = draft.theme;
-  const upd = (patch: Partial<SiteData["theme"]>) => set((d) => ({ ...d, theme: { ...d.theme, ...patch } }));
+  const upd = (patch: Partial<SiteData["theme"]>) =>
+    set((d) => ({ ...d, theme: { ...d.theme, ...patch } }));
   const groups = ["Sans", "Display", "Bangla", "Mono"] as const;
   const FontSelect = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
-    <select value={value} onChange={(e) => onChange(e.target.value)} className="h-9 w-full rounded-md border border-input bg-transparent px-2 text-sm">
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="h-9 w-full rounded-md border border-input bg-transparent px-2 text-sm"
+    >
       {groups.map((g) => (
         <optgroup key={g} label={g} className="bg-card">
           {FONT_OPTIONS.filter((f) => f.group === g).map((f) => (
@@ -152,17 +232,29 @@ function ThemeEditor({ draft, set }: EP) {
   );
   return (
     <>
-      <EditorCard title="Mode" desc="Visitors switch between your dark and light look with the sun/moon button. The live preview shows the default mode.">
+      <EditorCard
+        title="Mode"
+        desc="Visitors switch between your dark and light look with the sun/moon button. The live preview shows the default mode."
+      >
         <div className="flex flex-wrap gap-2">
           {(["dark", "light"] as const).map((m) => (
-            <Button key={m} type="button" variant={th.defaultMode === m ? "default" : "outline"} onClick={() => upd({ defaultMode: m })}>
+            <Button
+              key={m}
+              type="button"
+              variant={th.defaultMode === m ? "default" : "outline"}
+              onClick={() => upd({ defaultMode: m })}
+            >
               {m === "dark" ? "Dark" : "Light"} by default
             </Button>
           ))}
         </div>
       </EditorCard>
       {(["dark", "light"] as const).map((m) => (
-        <EditorCard key={m} title={`${m === "dark" ? "Dark" : "Light"} mode colors`} desc="Start from a template, then fine-tune any color.">
+        <EditorCard
+          key={m}
+          title={`${m === "dark" ? "Dark" : "Light"} mode colors`}
+          desc="Start from a template, then fine-tune any color."
+        >
           <div className="flex flex-wrap gap-2">
             {PRESETS.filter((p) => p.mode === m).map((p) => (
               <button
@@ -172,9 +264,11 @@ function ThemeEditor({ draft, set }: EP) {
                 className="flex items-center gap-2 rounded-md border px-2.5 py-1.5 text-xs transition-colors hover:bg-accent"
               >
                 <span className="flex overflow-hidden rounded-sm border">
-                  {[p.colors.background, p.colors.card, p.colors.primary, p.colors.accent].map((c, i) => (
-                    <span key={i} className="h-4 w-3" style={{ background: c }} />
-                  ))}
+                  {[p.colors.background, p.colors.card, p.colors.primary, p.colors.accent].map(
+                    (c, i) => (
+                      <span key={i} className="h-4 w-3" style={{ background: c }} />
+                    ),
+                  )}
                 </span>
                 {p.label}
               </button>
@@ -187,13 +281,17 @@ function ThemeEditor({ draft, set }: EP) {
                   <input
                     type="color"
                     value={/^#[0-9a-f]{6}$/i.test(th[m][k]) ? th[m][k] : "#000000"}
-                    onChange={(e) => upd({ [m]: { ...th[m], [k]: e.target.value }, defaultMode: m } as any)}
+                    onChange={(e) =>
+                      upd({ [m]: { ...th[m], [k]: e.target.value }, defaultMode: m } as any)
+                    }
                     className="h-9 w-10 shrink-0 cursor-pointer rounded border bg-transparent"
                     aria-label={`${m} ${k}`}
                   />
                   <span className="min-w-0 flex-1">
                     <span className="block text-xs font-medium capitalize">{k}</span>
-                    <span className="block truncate text-[11px] text-muted-foreground">{COLOR_HINTS[k]}</span>
+                    <span className="block truncate text-[11px] text-muted-foreground">
+                      {COLOR_HINTS[k]}
+                    </span>
                   </span>
                   <Input
                     value={th[m][k]}
@@ -220,7 +318,13 @@ function ThemeEditor({ draft, set }: EP) {
           </div>
           <div>
             <FieldLabel>Corner roundness · {th.radius}px</FieldLabel>
-            <Slider value={[th.radius]} min={0} max={24} step={1} onValueChange={([v]) => upd({ radius: v ?? 0 })} />
+            <Slider
+              value={[th.radius]}
+              min={0}
+              max={24}
+              step={1}
+              onValueChange={([v]) => upd({ radius: v ?? 0 })}
+            />
           </div>
           <div>
             <FieldLabel>Card borders</FieldLabel>
@@ -234,7 +338,8 @@ function ThemeEditor({ draft, set }: EP) {
 
 function SettingsEditor({ draft, set }: EP) {
   const s = draft.settings;
-  const upd = (patch: Partial<SiteData["settings"]>) => set((d) => ({ ...d, settings: { ...d.settings, ...patch } }));
+  const upd = (patch: Partial<SiteData["settings"]>) =>
+    set((d) => ({ ...d, settings: { ...d.settings, ...patch } }));
   return (
     <>
       <EditorCard title="Site status">
@@ -265,7 +370,13 @@ function SettingsEditor({ draft, set }: EP) {
         />
         <ObjectFields
           value={s}
-          onChange={(v) => upd({ readingProgress: v.readingProgress, disableRightClick: v.disableRightClick, disableSelection: v.disableSelection })}
+          onChange={(v) =>
+            upd({
+              readingProgress: v.readingProgress,
+              disableRightClick: v.disableRightClick,
+              disableSelection: v.disableSelection,
+            })
+          }
           fields={[
             { key: "readingProgress", label: "Reading progress bar", type: "switch" },
             { key: "disableRightClick", label: "Disable right-click", type: "switch" },
@@ -288,14 +399,28 @@ function SettingsEditor({ draft, set }: EP) {
             { key: "fpsCounter", label: "FPS / hardware HUD", type: "switch" },
             { key: "consoleBanner", label: "DevTools console banner", type: "switch" },
             { key: "konami", label: "Konami arcade", type: "switch" },
-            { key: "matrixGlyphs", label: "Matrix glyphs", type: "select", options: ["katakana", "binary", "mixed"] },
+            {
+              key: "matrixGlyphs",
+              label: "Matrix glyphs",
+              type: "select",
+              options: ["katakana", "binary", "mixed"],
+            },
           ]}
         />
       </EditorCard>
       <EditorCard title="Easter egg reference">
         <div className="divide-y">
-          {INTERACTION_EGGS.map((egg) => <div key={egg.name} className="py-3"><p className="text-sm font-medium">{egg.name}</p><p className="text-xs text-muted-foreground">{egg.trigger}</p></div>)}
-          {EASTER_EGGS.map((egg) => <div key={egg.command} className="py-2 text-xs"><code className="text-primary">{egg.command}</code> · {egg.name} — {egg.hint}</div>)}
+          {INTERACTION_EGGS.map((egg) => (
+            <div key={egg.name} className="py-3">
+              <p className="text-sm font-medium">{egg.name}</p>
+              <p className="text-xs text-muted-foreground">{egg.trigger}</p>
+            </div>
+          ))}
+          {EASTER_EGGS.map((egg) => (
+            <div key={egg.command} className="py-2 text-xs">
+              <code className="text-primary">{egg.command}</code> · {egg.name} — {egg.hint}
+            </div>
+          ))}
         </div>
       </EditorCard>
       <EditorCard title="Terminal">
@@ -321,7 +446,13 @@ function SettingsEditor({ draft, set }: EP) {
         />
       </EditorCard>
       <EditorCard title="Custom CSS" desc="Injected on the public site after the theme.">
-        <ObjectFields value={s} onChange={(v) => upd({ customCss: v.customCss })} fields={[{ key: "customCss", label: "CSS", type: "code", placeholder: ".hud-card { … }" }]} />
+        <ObjectFields
+          value={s}
+          onChange={(v) => upd({ customCss: v.customCss })}
+          fields={[
+            { key: "customCss", label: "CSS", type: "code", placeholder: ".hud-card { … }" },
+          ]}
+        />
       </EditorCard>
     </>
   );
@@ -330,13 +461,26 @@ function SettingsEditor({ draft, set }: EP) {
 // Component types are cached per key so re-renders never remount (and never steal input focus).
 const editorCache = new Map<string, (p: EP) => ReactNode>();
 
-function listEditor<K extends keyof SiteData>(key: K, title: string, fields: FieldDef[], newItem: () => any, desc?: string, search?: SearchKind) {
+function listEditor<K extends keyof SiteData>(
+  key: K,
+  title: string,
+  fields: FieldDef[],
+  newItem: () => any,
+  desc?: string,
+  search?: SearchKind,
+) {
   const cacheKey = `list:${String(key)}`;
   const hit = editorCache.get(cacheKey);
   if (hit) return hit;
   const Editor = ({ draft, set }: EP) => (
     <EditorCard title={title} desc={desc}>
-      <ListEditor items={draft[key] as any[]} onChange={(v) => set((d) => ({ ...d, [key]: v }))} fields={fields} newItem={newItem} search={search} />
+      <ListEditor
+        items={draft[key] as any[]}
+        onChange={(v) => set((d) => ({ ...d, [key]: v }))}
+        fields={fields}
+        newItem={newItem}
+        search={search}
+      />
     </EditorCard>
   );
   editorCache.set(cacheKey, Editor);
@@ -349,7 +493,11 @@ function objectEditor<K extends keyof SiteData>(key: K, title: string, fields: F
   if (hit) return hit;
   const Editor = ({ draft, set }: EP) => (
     <EditorCard title={title}>
-      <ObjectFields value={draft[key]} onChange={(v) => set((d) => ({ ...d, [key]: v }))} fields={fields} />
+      <ObjectFields
+        value={draft[key]}
+        onChange={(v) => set((d) => ({ ...d, [key]: v }))}
+        fields={fields}
+      />
     </EditorCard>
   );
   editorCache.set(cacheKey, Editor);
@@ -361,7 +509,10 @@ function GuestbookModeration() {
   const del = useServerFn(deleteGuestbookEntry);
   const qc = useQueryClient();
   return (
-    <EditorCard title="Guestbook moderation" desc="Entries are live. Delete spam with the trash icon.">
+    <EditorCard
+      title="Guestbook moderation"
+      desc="Entries are live. Delete spam with the trash icon."
+    >
       <GuestbookSection
         adminToken={token}
         onDelete={async (id) => {
@@ -406,7 +557,13 @@ const AboutEditor = objectEditor("about", "About", [
     newItem: () => ({ id: uid("grd"), title: "New grid", items: [] }),
     fields: [
       { key: "title", label: "Title", type: "text", full: true },
-      { key: "items", label: "Items", type: "list", newItem: () => ({ label: "Label", value: "Value" }), fields: kvFields },
+      {
+        key: "items",
+        label: "Items",
+        type: "list",
+        newItem: () => ({ label: "Label", value: "Value" }),
+        fields: kvFields,
+      },
     ],
   },
   {
@@ -425,46 +582,81 @@ export const EDITORS: EditorDef[] = [
   { id: "profile", label: "Profile", group: "Site", render: (p) => <ProfileEditor {...p} /> },
   { id: "tabs", label: "Tabs", group: "Site", render: (p) => <TabManager {...p} /> },
   { id: "theme", label: "Theme", group: "Site", render: (p) => <ThemeEditor {...p} /> },
-  { id: "seo", label: "SEO & Identity", group: "Site", render: (p) => { const E = objectEditor("seo", "SEO & Identity", [
-    { key: "fullName", label: "Full name", type: "text" },
-    { key: "siteUrl", label: "Site URL", type: "url" },
-    { key: "title", label: "Google title", type: "text", full: true },
-    { key: "description", label: "Description / bio", type: "textarea", full: true },
-    { key: "location", label: "Location", type: "text" },
-    { key: "school", label: "School", type: "text" },
-    { key: "college", label: "College", type: "text" },
-    { key: "ogImage", label: "Share image (absolute URL)", type: "image" },
-    { key: "alternateNames", label: "Alternate names / handles", type: "tags", full: true },
-    { key: "keywords", label: "Keywords", type: "tags", full: true },
-    { key: "sameAs", label: "Extra profile URLs (links are added automatically)", type: "strings", full: true },
-    { key: "jobTitle", label: "Job title / role", type: "text" },
-    { key: "email", label: "Public email", type: "text" },
-    { key: "gender", label: "Gender", type: "text" },
-    { key: "nationality", label: "Nationality", type: "text" },
-    { key: "birthDate", label: "Birth date (YYYY-MM-DD, optional)", type: "text" },
-    { key: "languages", label: "Languages", type: "tags", full: true },
-    { key: "knowsAbout", label: "Skills / knows about", type: "tags", full: true },
-    { key: "awards", label: "Achievements / awards", type: "strings", full: true },
-    { key: "favorites", label: "Favourite things", type: "strings", full: true },
-    { key: "hobbies", label: "Hobbies & interests", type: "tags", full: true },
-    { key: "memberOf", label: "Clubs / organisations", type: "strings", full: true },
-    { key: "includeSiteSkills", label: "Also use Skills section", type: "switch" },
-    { key: "includeSiteAchievements", label: "Also use Achievements section", type: "switch" },
-  ]); return <E {...p} />; } },
-  { id: "settings", label: "Settings & FX", group: "Site", render: (p) => <SettingsEditor {...p} /> },
+  {
+    id: "seo",
+    label: "SEO & Identity",
+    group: "Site",
+    render: (p) => {
+      const E = objectEditor("seo", "SEO & Identity", [
+        { key: "fullName", label: "Full name", type: "text" },
+        { key: "siteUrl", label: "Site URL", type: "url" },
+        { key: "title", label: "Google title", type: "text", full: true },
+        { key: "description", label: "Description / bio", type: "textarea", full: true },
+        { key: "location", label: "Location", type: "text" },
+        { key: "school", label: "School", type: "text" },
+        { key: "college", label: "College", type: "text" },
+        { key: "ogImage", label: "Share image (absolute URL)", type: "image" },
+        { key: "alternateNames", label: "Alternate names / handles", type: "tags", full: true },
+        { key: "keywords", label: "Keywords", type: "tags", full: true },
+        {
+          key: "sameAs",
+          label: "Extra profile URLs (links are added automatically)",
+          type: "strings",
+          full: true,
+        },
+        { key: "jobTitle", label: "Job title / role", type: "text" },
+        { key: "email", label: "Public email", type: "text" },
+        { key: "gender", label: "Gender", type: "text" },
+        { key: "nationality", label: "Nationality", type: "text" },
+        { key: "birthDate", label: "Birth date (YYYY-MM-DD, optional)", type: "text" },
+        { key: "languages", label: "Languages", type: "tags", full: true },
+        { key: "knowsAbout", label: "Skills / knows about", type: "tags", full: true },
+        { key: "awards", label: "Achievements / awards", type: "strings", full: true },
+        { key: "favorites", label: "Favourite things", type: "strings", full: true },
+        { key: "hobbies", label: "Hobbies & interests", type: "tags", full: true },
+        { key: "memberOf", label: "Clubs / organisations", type: "strings", full: true },
+        { key: "includeSiteSkills", label: "Also use Skills section", type: "switch" },
+        { key: "includeSiteAchievements", label: "Also use Achievements section", type: "switch" },
+      ]);
+      return <E {...p} />;
+    },
+  },
+  {
+    id: "settings",
+    label: "Settings & FX",
+    group: "Site",
+    render: (p) => <SettingsEditor {...p} />,
+  },
   { id: "about", label: "About", group: "Sections", render: (p) => <AboutEditor {...p} /> },
   {
     id: "links",
     label: "Links",
     group: "Sections",
     render: (p) => {
-      const E = listEditor("links", "Links", [
-        { key: "title", label: "Title", type: "text" },
-        { key: "category", label: "Category", type: "select", options: ["dev", "social", "gaming", "other"] },
-        { key: "url", label: "URL (platform icon auto-detected)", type: "url" },
-        { key: "favicon", label: "Website favicon", type: "favicon", full: true },
-        { key: "handle", label: "Handle", type: "text" },
-      ], () => ({ id: uid("lnk"), title: "New link", url: "https://", category: "dev", handle: "", favicon: "" }));
+      const E = listEditor(
+        "links",
+        "Links",
+        [
+          { key: "title", label: "Title", type: "text" },
+          {
+            key: "category",
+            label: "Category",
+            type: "select",
+            options: ["dev", "social", "gaming", "other"],
+          },
+          { key: "url", label: "URL (platform icon auto-detected)", type: "url" },
+          { key: "favicon", label: "Website favicon", type: "favicon", full: true },
+          { key: "handle", label: "Handle", type: "text" },
+        ],
+        () => ({
+          id: uid("lnk"),
+          title: "New link",
+          url: "https://",
+          category: "dev",
+          handle: "",
+          favicon: "",
+        }),
+      );
       return <E {...p} />;
     },
   },
@@ -482,7 +674,12 @@ export const EDITORS: EditorDef[] = [
           titleKey: "url",
           newItem: () => ({ id: uid("emb"), platform: "instagram", url: "", caption: "" }),
           fields: [
-            { key: "platform", label: "Platform", type: "select", options: ["instagram", "facebook", "youtube", "x", "other"] },
+            {
+              key: "platform",
+              label: "Platform",
+              type: "select",
+              options: ["instagram", "facebook", "youtube", "x", "other"],
+            },
             { key: "url", label: "Post URL", type: "url" },
             { key: "caption", label: "Caption", type: "text", full: true },
           ],
@@ -496,16 +693,36 @@ export const EDITORS: EditorDef[] = [
     label: "Projects",
     group: "Sections",
     render: (p) => {
-      const E = listEditor("projects", "Projects", [
-        { key: "title", label: "Title", type: "text" },
-        { key: "status", label: "Status", type: "select", options: ["Live", "Beta", "Active", "Deployed", "Archived"] },
-        { key: "category", label: "Category", type: "text" },
-        { key: "tags", label: "Tags", type: "tags" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "url", label: "Live URL", type: "url" },
-        { key: "repo", label: "Repo URL", type: "url" },
-        { key: "image", label: "Thumbnail", type: "image", full: true },
-      ], () => ({ id: uid("prj"), title: "New project", description: "", category: "Web", tags: [], status: "Active", url: "", repo: "", image: "" }));
+      const E = listEditor(
+        "projects",
+        "Projects",
+        [
+          { key: "title", label: "Title", type: "text" },
+          {
+            key: "status",
+            label: "Status",
+            type: "select",
+            options: ["Live", "Beta", "Active", "Deployed", "Archived"],
+          },
+          { key: "category", label: "Category", type: "text" },
+          { key: "tags", label: "Tags", type: "tags" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "url", label: "Live URL", type: "url" },
+          { key: "repo", label: "Repo URL", type: "url" },
+          { key: "image", label: "Thumbnail", type: "image", full: true },
+        ],
+        () => ({
+          id: uid("prj"),
+          title: "New project",
+          description: "",
+          category: "Web",
+          tags: [],
+          status: "Active",
+          url: "",
+          repo: "",
+          image: "",
+        }),
+      );
       return <E {...p} />;
     },
   },
@@ -514,16 +731,43 @@ export const EDITORS: EditorDef[] = [
     label: "Gaming",
     group: "Sections",
     render: (p) => {
-      const E = listEditor("games", "Game collection", [
-        { key: "title", label: "Title", type: "text" },
-        { key: "platform", label: "Platform", type: "select", options: ["PC", "Console", "Mobile"] },
-        { key: "status", label: "Status", type: "select", options: ["Playing", "Completed", "Dropped", "Backlog"] },
-        { key: "hours", label: "Hours", type: "number" },
-        { key: "rating", label: "Rating /10", type: "slider", min: 0, max: 10 },
-        { key: "favorite", label: "Favorite", type: "switch" },
-        { key: "review", label: "Review", type: "textarea" },
-        { key: "image", label: "Cover", type: "image", full: true },
-      ], () => ({ id: uid("gm"), title: "New game", platform: "PC", status: "Playing", hours: 0, rating: 7, review: "", favorite: false, image: "" }), undefined, "games");
+      const E = listEditor(
+        "games",
+        "Game collection",
+        [
+          { key: "title", label: "Title", type: "text" },
+          {
+            key: "platform",
+            label: "Platform",
+            type: "select",
+            options: ["PC", "Console", "Mobile"],
+          },
+          {
+            key: "status",
+            label: "Status",
+            type: "select",
+            options: ["Playing", "Completed", "Dropped", "Backlog"],
+          },
+          { key: "hours", label: "Hours", type: "number" },
+          { key: "rating", label: "Rating /10", type: "slider", min: 0, max: 10 },
+          { key: "favorite", label: "Favorite", type: "switch" },
+          { key: "review", label: "Review", type: "textarea" },
+          { key: "image", label: "Cover", type: "image", full: true },
+        ],
+        () => ({
+          id: uid("gm"),
+          title: "New game",
+          platform: "PC",
+          status: "Playing",
+          hours: 0,
+          rating: 7,
+          review: "",
+          favorite: false,
+          image: "",
+        }),
+        undefined,
+        "games",
+      );
       return <E {...p} />;
     },
   },
@@ -533,7 +777,12 @@ export const EDITORS: EditorDef[] = [
     group: "Sections",
     render: (p) => {
       const E = objectEditor("now", "Now", [
-        { key: "availability", label: "Availability", type: "select", options: ["open", "busy", "away"] },
+        {
+          key: "availability",
+          label: "Availability",
+          type: "select",
+          options: ["open", "busy", "away"],
+        },
         { key: "updated", label: "Last updated", type: "text", placeholder: "2026-11-08" },
         { key: "availabilityText", label: "Availability text", type: "text", full: true },
         { key: "focus", label: "Active focus", type: "text" },
@@ -550,12 +799,23 @@ export const EDITORS: EditorDef[] = [
     label: "Resources",
     group: "Sections",
     render: (p) => {
-      const E = listEditor("resources", "Resources", [
-        { key: "title", label: "Title", type: "text" },
-        { key: "category", label: "Category", type: "text" },
-        { key: "url", label: "URL", type: "url", full: true },
-        { key: "description", label: "Description", type: "text", full: true },
-      ], () => ({ id: uid("res"), title: "New resource", url: "https://", category: "Tools", description: "" }));
+      const E = listEditor(
+        "resources",
+        "Resources",
+        [
+          { key: "title", label: "Title", type: "text" },
+          { key: "category", label: "Category", type: "text" },
+          { key: "url", label: "URL", type: "url", full: true },
+          { key: "description", label: "Description", type: "text", full: true },
+        ],
+        () => ({
+          id: uid("res"),
+          title: "New resource",
+          url: "https://",
+          category: "Tools",
+          description: "",
+        }),
+      );
       return <E {...p} />;
     },
   },
@@ -564,14 +824,32 @@ export const EDITORS: EditorDef[] = [
     label: "Achievements",
     group: "Sections",
     render: (p) => {
-      const E = listEditor("achievements", "Achievements", [
-        { key: "title", label: "Title", type: "text" },
-        { key: "kind", label: "Type", type: "select", options: ["Certificate", "Award", "Competition"] },
-        { key: "issuer", label: "Issuing organization", type: "text" },
-        { key: "date", label: "Date", type: "text", placeholder: "2026-05" },
-        { key: "description", label: "Description", type: "textarea" },
-        { key: "url", label: "Verification URL", type: "url", full: true },
-      ], () => ({ id: uid("ach"), title: "New achievement", issuer: "", date: "", kind: "Certificate", description: "", url: "" }));
+      const E = listEditor(
+        "achievements",
+        "Achievements",
+        [
+          { key: "title", label: "Title", type: "text" },
+          {
+            key: "kind",
+            label: "Type",
+            type: "select",
+            options: ["Certificate", "Award", "Competition"],
+          },
+          { key: "issuer", label: "Issuing organization", type: "text" },
+          { key: "date", label: "Date", type: "text", placeholder: "2026-05" },
+          { key: "description", label: "Description", type: "textarea" },
+          { key: "url", label: "Verification URL", type: "url", full: true },
+        ],
+        () => ({
+          id: uid("ach"),
+          title: "New achievement",
+          issuer: "",
+          date: "",
+          kind: "Certificate",
+          description: "",
+          url: "",
+        }),
+      );
       return <E {...p} />;
     },
   },
@@ -611,12 +889,23 @@ export const EDITORS: EditorDef[] = [
     label: "Timeline",
     group: "Sections",
     render: (p) => {
-      const E = listEditor("timeline", "Timeline", [
-        { key: "title", label: "Title", type: "text" },
-        { key: "date", label: "Date", type: "text" },
-        { key: "kind", label: "Kind", type: "select", options: ["career", "hobby", "education"] },
-        { key: "description", label: "Description", type: "textarea" },
-      ], () => ({ id: uid("tl"), date: "2026", title: "Milestone", kind: "career", description: "" }));
+      const E = listEditor(
+        "timeline",
+        "Timeline",
+        [
+          { key: "title", label: "Title", type: "text" },
+          { key: "date", label: "Date", type: "text" },
+          { key: "kind", label: "Kind", type: "select", options: ["career", "hobby", "education"] },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+        () => ({
+          id: uid("tl"),
+          date: "2026",
+          title: "Milestone",
+          kind: "career",
+          description: "",
+        }),
+      );
       return <E {...p} />;
     },
   },
@@ -625,12 +914,28 @@ export const EDITORS: EditorDef[] = [
     label: "Goals",
     group: "Sections",
     render: (p) => {
-      const E = listEditor("goals", "Goals", [
-        { key: "title", label: "Title", type: "text" },
-        { key: "category", label: "Category", type: "select", options: ["personal", "professional"] },
-        { key: "progress", label: "Progress %", type: "slider", min: 0, max: 100, full: true },
-        { key: "description", label: "Description", type: "textarea" },
-      ], () => ({ id: uid("gl"), title: "New goal", category: "personal", description: "", progress: 0 }));
+      const E = listEditor(
+        "goals",
+        "Goals",
+        [
+          { key: "title", label: "Title", type: "text" },
+          {
+            key: "category",
+            label: "Category",
+            type: "select",
+            options: ["personal", "professional"],
+          },
+          { key: "progress", label: "Progress %", type: "slider", min: 0, max: 100, full: true },
+          { key: "description", label: "Description", type: "textarea" },
+        ],
+        () => ({
+          id: uid("gl"),
+          title: "New goal",
+          category: "personal",
+          description: "",
+          progress: 0,
+        }),
+      );
       return <E {...p} />;
     },
   },
@@ -647,7 +952,13 @@ export const EDITORS: EditorDef[] = [
           newItem: () => ({ id: uid("su"), title: "New group", items: [] }),
           fields: [
             { key: "title", label: "Title", type: "text", full: true },
-            { key: "items", label: "Specs", type: "list", newItem: () => ({ label: "Part", value: "Model" }), fields: kvFields },
+            {
+              key: "items",
+              label: "Specs",
+              type: "list",
+              newItem: () => ({ label: "Part", value: "Model" }),
+              fields: kvFields,
+            },
           ],
         },
       ]);
@@ -659,13 +970,25 @@ export const EDITORS: EditorDef[] = [
     label: "Album",
     group: "Sections",
     render: (p) => {
-      const E = listEditor("album", "Album", [
-        { key: "title", label: "Title", type: "text" },
-        { key: "kind", label: "Kind", type: "select", options: ["photo", "sketch", "vector"] },
-        { key: "hue", label: "Accent hue", type: "slider", min: 0, max: 360, full: true },
-        { key: "image", label: "Image", type: "image", full: true },
-        { key: "caption", label: "Caption", type: "text", full: true },
-      ], () => ({ id: uid("alb"), title: "New piece", image: "", kind: "photo", hue: 120, caption: "" }));
+      const E = listEditor(
+        "album",
+        "Album",
+        [
+          { key: "title", label: "Title", type: "text" },
+          { key: "kind", label: "Kind", type: "select", options: ["photo", "sketch", "vector"] },
+          { key: "hue", label: "Accent hue", type: "slider", min: 0, max: 360, full: true },
+          { key: "image", label: "Image", type: "image", full: true },
+          { key: "caption", label: "Caption", type: "text", full: true },
+        ],
+        () => ({
+          id: uid("alb"),
+          title: "New piece",
+          image: "",
+          kind: "photo",
+          hue: 120,
+          caption: "",
+        }),
+      );
       return <E {...p} />;
     },
   },
@@ -677,20 +1000,46 @@ export const EDITORS: EditorDef[] = [
       const E = objectEditor("audio", "Audio player", [
         { key: "autoplay", label: "Autoplay next", type: "switch" },
         { key: "shuffle", label: "Shuffle", type: "switch" },
-        { key: "volume", label: "Default volume", type: "slider", min: 0, max: 1, step: 0.05, full: true },
+        {
+          key: "volume",
+          label: "Default volume",
+          type: "slider",
+          min: 0,
+          max: 1,
+          step: 0.05,
+          full: true,
+        },
         {
           key: "tracks",
           label: "Tracks",
           type: "list",
           search: "tracks",
-          newItem: () => ({ id: uid("trk"), title: "New track", artist: "", url: "", notes: [261.63, 329.63, 392], bpm: 120, wave: "square" }),
+          newItem: () => ({
+            id: uid("trk"),
+            title: "New track",
+            artist: "",
+            url: "",
+            notes: [261.63, 329.63, 392],
+            bpm: 120,
+            wave: "square",
+          }),
           fields: [
             { key: "title", label: "Title", type: "text" },
             { key: "artist", label: "Artist", type: "text" },
-            { key: "url", label: "Music file — upload or paste a link (leave empty to use synth)", type: "audio", full: true },
+            {
+              key: "url",
+              label: "Music file — upload or paste a link (leave empty to use synth)",
+              type: "audio",
+              full: true,
+            },
             { key: "notes", label: "Synth frequencies (Hz)", type: "numbers", full: true },
             { key: "bpm", label: "BPM", type: "slider", min: 60, max: 240 },
-            { key: "wave", label: "Waveform", type: "select", options: ["square", "sawtooth", "triangle", "sine"] },
+            {
+              key: "wave",
+              label: "Waveform",
+              type: "select",
+              options: ["square", "sawtooth", "triangle", "sine"],
+            },
           ],
         },
       ]);
@@ -703,10 +1052,15 @@ export const EDITORS: EditorDef[] = [
     label: "FAQ",
     group: "Sections",
     render: (p) => {
-      const E = listEditor("faq", "FAQ", [
-        { key: "q", label: "Question", type: "text", full: true },
-        { key: "a", label: "Answer", type: "textarea" },
-      ], () => ({ id: uid("faq"), q: "New question?", a: "" }));
+      const E = listEditor(
+        "faq",
+        "FAQ",
+        [
+          { key: "q", label: "Question", type: "text", full: true },
+          { key: "a", label: "Answer", type: "textarea" },
+        ],
+        () => ({ id: uid("faq"), q: "New question?", a: "" }),
+      );
       return <E {...p} />;
     },
   },
