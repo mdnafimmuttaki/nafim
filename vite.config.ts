@@ -16,5 +16,10 @@ export default defineConfig({
     server: { entry: "server" },
   },
   // On Vercel builds (VERCEL=1) target Vercel's runtime; the Lovable build ignores this.
-  ...(process.env["VERCEL"] ? { nitro: { preset: "vercel" } } : {}),
+  // Vercel (VERCEL=1) and Netlify (NETLIFY=true) get their own runtime; Lovable builds ignore this.
+  ...(process.env["VERCEL"]
+    ? { nitro: { preset: "vercel" } }
+    : process.env["NETLIFY"]
+      ? { nitro: { preset: "netlify" } }
+      : {}),
 });
