@@ -40,4 +40,4 @@ use the editor.
 - Guestbook entries are a separate table with anon insert (length-checked by RLS) and admin-only delete via server function. Why: visitor writes stay isolated from the content document.
 - Live CMS preview is the public `/` route in an iframe with `?preview=1`, fed drafts via same-origin `postMessage`. Why: isolates global hotkeys/effects from the editor.
 - Runtime theme colors are injected as CSS variables by `ThemeStyle`; components use only semantic tokens/utilities from `src/styles.css`.
-- Vercel builds (VERCEL env set) switch nitro to the `vercel` preset in vite.config.ts; Lovable builds ignore it. Why: owner also hosts on Vercel.
+- Vercel (VERCEL) and Netlify (NETLIFY) builds switch nitro to their preset in vite.config.ts; Lovable builds ignore it. Why: owner also hosts externally.
