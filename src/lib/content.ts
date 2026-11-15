@@ -274,6 +274,19 @@ export interface Seo {
   college: string;
   ogImage: string;
   sameAs: string[];
+  jobTitle: string;
+  gender: string;
+  nationality: string;
+  birthDate: string;
+  languages: string[];
+  knowsAbout: string[];
+  awards: string[];
+  favorites: string[];
+  hobbies: string[];
+  memberOf: string[];
+  email: string;
+  includeSiteSkills: boolean;
+  includeSiteAchievements: boolean;
 }
 
 export const TAB_LABELS: Record<TabId, string> = {
@@ -341,15 +354,28 @@ export function createDefaultData(): SiteData {
     seo: {
       siteUrl: "https://nafim.vercel.app",
       fullName: "Md Nafim Muttaki",
-      alternateNames: ["naphium", "Nafim Muttaki", "Md. Nafim Muttaki"],
+      alternateNames: ["Nafim", "Nafim Muttaki", "naphium", "Md. Nafim Muttaki", "Muttaki"],
       title: "Md Nafim Muttaki (naphium) — Portfolio | Rajshahi, Bangladesh",
       description: "Md Nafim Muttaki (naphium) is a student and developer from Rajshahi, Bangladesh. Govt. Laboratory High School (SSC 2026), Rajshahi College (HSC 2028). Projects, skills and contact.",
-      keywords: ["Md Nafim Muttaki", "Nafim Muttaki", "naphium", "Rajshahi", "Bangladesh", "Govt. Laboratory High School", "Rajshahi College", "portfolio"],
+      keywords: ["Nafim", "Nafim Muttaki", "Md Nafim Muttaki", "naphium", "Nafim Rajshahi", "Nafim Bangladesh", "Rajshahi", "Bangladesh", "Govt. Laboratory High School", "Rajshahi College", "portfolio"],
       location: "Rajshahi, Bangladesh",
       school: "Govt. Laboratory High School (SSC 2026)",
       college: "Rajshahi College (HSC 2028)",
       ogImage: "",
       sameAs: [],
+      jobTitle: "Student & Web Developer",
+      gender: "Male",
+      nationality: "Bangladeshi",
+      birthDate: "",
+      languages: ["Bengali", "English"],
+      knowsAbout: ["Web development", "React", "TypeScript", "Embedded systems"],
+      awards: [],
+      favorites: [],
+      hobbies: ["Gaming", "Music", "Programming"],
+      memberOf: [],
+      email: "",
+      includeSiteSkills: true,
+      includeSiteAchievements: true,
     },
     settings: {
       maintenance: { enabled: false, message: "System offline for maintenance. Back shortly." },

@@ -29,7 +29,17 @@ export const Route = createFileRoute("/")({
       address: { "@type": "PostalAddress", addressLocality: (seo?.location || "").split(",")[0]?.trim(), addressCountry: (seo?.location || "").split(",")[1]?.trim() },
       alumniOf: [seo?.school, seo?.college].filter(Boolean).map((n) => ({ "@type": "EducationalOrganization", name: n })),
       sameAs,
+      ...(seo?.jobTitle ? { jobTitle: seo.jobTitle } : {}),
+      ...(seo?.gender ? { gender: seo.gender } : {}),
+      ...(seo?.nationality ? { nationality: { "@type": "Country", name: seo.nationality } } : {}),
+      ...(seo?.birthDate ? { birthDate: seo.birthDate } : {}),
+      ...(seo?.email ? { email: `mailto:${seo.email}` } : {}),
+      knowsLanguage: seo?.languages ?? [],
+      knowsAbout: [...new Set([...(seo?.knowsAbout ?? []), ...(seo?.hobbies ?? []), ...(seo?.favorites ?? []), ...(seo?.includeSiteSkills ? (d?.skills.groups ?? []).flatMap((g) => g.items.map((i) => i.name)) : [])])],
+      award: [...(seo?.awards ?? []), ...(seo?.includeSiteAchievements ? (d?.achievements ?? []).map((a) => a.title) : [])],
+      memberOf: (seo?.memberOf ?? []).map((n) => ({ "@type": "Organization", name: n })),
     };
+    const site = { "@context": "https://schema.org", "@type": "WebSite", name, alternateName: seo?.alternateNames ?? [], url };
     return {
       meta: [
         { title },
@@ -52,7 +62,7 @@ export const Route = createFileRoute("/")({
         ...(img ? [{ property: "og:image", content: img }, { name: "twitter:image", content: img }] : []),
       ],
       links: [{ rel: "canonical", href: url + "/" }],
-      scripts: [{ type: "application/ld+json", children: JSON.stringify(person) }],
+      scripts: [{ type: "application/ld+json", children: JSON.stringify(person) }, { type: "application/ld+json", children: JSON.stringify(site) }],
     };
   },
   component: Index,
